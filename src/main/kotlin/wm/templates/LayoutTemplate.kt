@@ -15,20 +15,20 @@ class LayoutTemplate: Template<HTML> {
             header {
                 div {
                     img {
-                        src = ""
-                        alt = ""
+                        src = "/static/logo.png"
+                        alt = "logo"
                     }
                 }
                 nav {
-                    ul() {
+                    ul("menu") {
                         li {
-                            a() {
+                            a {
                                 href = ""
                                 +""
                             }
                         }
                         li {
-                            a(){
+                            a {
                                 href = ""
                                 +""
                             }
@@ -43,9 +43,6 @@ class LayoutTemplate: Template<HTML> {
                     //"newFilm" -> this.insert(nuevoTemplate(), TemplatePlaceholder())
                     //"infoFilm" -> this.insert(nuevoTemplate(), TemplatePlaceholder())
                 }
-            }
-            footer {
-                a { +"production by x" }
             }
         }
     }
