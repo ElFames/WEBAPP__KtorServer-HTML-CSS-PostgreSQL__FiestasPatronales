@@ -7,7 +7,7 @@ import wm.data.DataBase
 import wm.plugins.*
 
 fun main() {
-    //DataBase.init()
+    DataBase.init()
     startWebApi()
 }
 fun Application.module() {

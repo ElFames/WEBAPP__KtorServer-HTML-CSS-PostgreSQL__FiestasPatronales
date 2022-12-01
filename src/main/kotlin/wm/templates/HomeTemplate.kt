@@ -8,7 +8,7 @@ data class HomeTemplate(val feastDAO: FeastDAO) : Template<FlowContent> {
 
     override fun FlowContent.apply() {
         h1 {
-            +"Hello World"
+            +"Resumen principal de la pagina"
         }
     }
 }

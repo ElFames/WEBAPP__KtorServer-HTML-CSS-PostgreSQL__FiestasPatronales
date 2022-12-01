@@ -1,5 +1,6 @@
 package wm.data
 
-class FeastDAO {
+import org.jetbrains.exposed.sql.transactions.transaction
 
+class FeastDAO {
 }

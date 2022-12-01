@@ -26,7 +26,7 @@ class LayoutTemplate(val feastDAO: FeastDAO) : Template<HTML> {
                         ul {
                             li {
                                 a(classes="enlace") {
-                                    href = ""
+                                    href = "/fiestaspatronales/home"
                                     +"Inicio-Resumen"
                                 }
                             }
@@ -34,7 +34,7 @@ class LayoutTemplate(val feastDAO: FeastDAO) : Template<HTML> {
                         ul {
                             li{
                                 a(classes="enlace") {
-                                    href = ""
+                                    href = "/fiestaspatronales/searcher"
                                     +"Buscador de fiestas"
                                 }
                             }
@@ -42,7 +42,7 @@ class LayoutTemplate(val feastDAO: FeastDAO) : Template<HTML> {
                         ul {
                             li{
                                 a(classes="enlace") {
-                                    href = ""
+                                    href = "/fiestaspatronales/popular"
                                     +"Fiestas populares"
                                 }
                             }
@@ -50,7 +50,7 @@ class LayoutTemplate(val feastDAO: FeastDAO) : Template<HTML> {
                         ul {
                             li{
                                 a(classes="enlace") {
-                                    href = ""
+                                    href = "/fiestaspatronales/nextRoute"
                                     +"Proximas Rutas"
                                 }
                             }
@@ -58,7 +58,7 @@ class LayoutTemplate(val feastDAO: FeastDAO) : Template<HTML> {
                         ul {
                             li{
                                 a(classes="enlace") {
-                                    href = ""
+                                    href = "/fiestaspatronales/contact"
                                     +"Contactanos"
                                 }
                             }
@@ -66,7 +66,7 @@ class LayoutTemplate(val feastDAO: FeastDAO) : Template<HTML> {
                         ul {
                             li{
                                 a(classes="enlace") {
-                                    href = ""
+                                    href = "/fiestaspatronales/api"
                                     +"Endpoint Api"
                                 }
                             }
@@ -76,8 +76,11 @@ class LayoutTemplate(val feastDAO: FeastDAO) : Template<HTML> {
                 div ("maincontent"){
                     when (content) {
                         "home" -> this.insert(HomeTemplate(feastDAO), TemplatePlaceholder())
-                        //"newFilm" -> this.insert(nuevoTemplate(), TemplatePlaceholder())
-                        //"infoFilm" -> this.insert(nuevoTemplate(), TemplatePlaceholder())
+                        "searcher" -> this.insert(SearcherTemplate(feastDAO), TemplatePlaceholder())
+                        "popular" -> this.insert(PopularTemplate(feastDAO), TemplatePlaceholder())
+                        "nextRoute" -> this.insert(NextRouteTemplate(feastDAO), TemplatePlaceholder())
+                        "contact" -> this.insert(ContactTemplate(feastDAO), TemplatePlaceholder())
+                        "api" -> this.insert(ApiTemplate(feastDAO), TemplatePlaceholder())
                     }
                 }
             }
