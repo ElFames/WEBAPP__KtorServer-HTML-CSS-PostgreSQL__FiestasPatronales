@@ -1,5 +1,5 @@
 package wm.data
 
-class feastDAO {
+class FeastDAO {
 
 }

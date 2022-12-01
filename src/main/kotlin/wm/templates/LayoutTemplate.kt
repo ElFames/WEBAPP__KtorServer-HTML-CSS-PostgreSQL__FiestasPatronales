@@ -2,8 +2,9 @@ package wm.templates
 
 import io.ktor.server.html.*
 import kotlinx.html.*
+import wm.data.FeastDAO
 
-class LayoutTemplate: Template<HTML> {
+class LayoutTemplate(val feastDAO: FeastDAO) : Template<HTML> {
     lateinit var content: String
 
     override fun HTML.apply() {
@@ -13,35 +14,71 @@ class LayoutTemplate: Template<HTML> {
         }
         body {
             header {
-                div {
-                    img {
-                        src = "/static/logo.png"
-                        alt = "logo"
-                    }
-                }
-                nav {
-                    ul("menu") {
-                        li {
-                            a {
-                                href = ""
-                                +""
-                            }
-                        }
-                        li {
-                            a {
-                                href = ""
-                                +""
-                            }
-                        }
-                    }
+                img {
+                    src = "/static/logo.png"
+                    alt = "logo"
                 }
             }
 
             main {
-                when (content) {
-                    //"home" -> this.insert(nuevoTemplate(), TemplatePlaceholder())
-                    //"newFilm" -> this.insert(nuevoTemplate(), TemplatePlaceholder())
-                    //"infoFilm" -> this.insert(nuevoTemplate(), TemplatePlaceholder())
+                div("menu") {
+                    nav {
+                        ul {
+                            li {
+                                a(classes="enlace") {
+                                    href = ""
+                                    +"Inicio-Resumen"
+                                }
+                            }
+                        }
+                        ul {
+                            li{
+                                a(classes="enlace") {
+                                    href = ""
+                                    +"Buscador de fiestas"
+                                }
+                            }
+                        }
+                        ul {
+                            li{
+                                a(classes="enlace") {
+                                    href = ""
+                                    +"Fiestas populares"
+                                }
+                            }
+                        }
+                        ul {
+                            li{
+                                a(classes="enlace") {
+                                    href = ""
+                                    +"Proximas Rutas"
+                                }
+                            }
+                        }
+                        ul {
+                            li{
+                                a(classes="enlace") {
+                                    href = ""
+                                    +"Contactanos"
+                                }
+                            }
+                        }
+                        ul {
+                            li{
+                                a(classes="enlace") {
+                                    href = ""
+                                    +"Endpoint Api"
+                                }
+                            }
+                        }
+                    }
+                }
+                div ("maincontent"){
+                    when (content) {
+                        "home" -> this.insert(HomeTemplate(feastDAO), TemplatePlaceholder())
+                        //"newFilm" -> this.insert(nuevoTemplate(), TemplatePlaceholder())
+                        //"infoFilm" -> this.insert(nuevoTemplate(), TemplatePlaceholder())
+                    }
                 }
             }
         }

@@ -8,6 +8,6 @@ object Feasts: IntIdTable() {
     val likes = integer("likes")
     val city = reference("name", Citys.name)
     val town = reference("name", Towns.name)
-    val image = varchar("image",50)
+    val image = varchar("image",8000)
     val description = varchar("description",500)
 }
