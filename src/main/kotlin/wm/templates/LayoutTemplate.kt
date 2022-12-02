@@ -14,9 +14,11 @@ class LayoutTemplate(val feastDAO: FeastDAO) : Template<HTML> {
         }
         body {
             header {
-                img {
-                    src = "/static/logo.png"
-                    alt = "logo"
+                a("/fiestaspatronales/home") {
+                    img {
+                        src = "/static/logo.png"
+                        alt = "logo"
+                    }
                 }
             }
 
