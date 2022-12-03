@@ -7,10 +7,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import wm.models.*
 
 object DataBase {
-    fun init() {
-        val driver = "org.postgresql.Driver"
-        val dbUrl = "jdbc:postgresql://localhost:5432/postgres"
-        val database = Database.connect( dbUrl, driver, user = "postgres", password = "")
+    private const val driver = "org.postgresql.Driver"
+    private const val dbUrl = "jdbc:postgresql://localhost:5432/postgres"
+    private val database = Database.connect( dbUrl, driver, user = "postgres", password = "")
+    fun init(){
         transaction(database) {
             SchemaUtils.create(Citys, Towns,Feasts)
         }
