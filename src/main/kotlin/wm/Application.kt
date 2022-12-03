@@ -3,8 +3,9 @@ package wm
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import wm.data.DataBase
-import wm.plugins.*
+import wm.plugins.configureRouting
+import wm.plugins.configureSerialization
+import wm.plugins.configureTemplating
 
 fun main() {
     //DataBase.init()
