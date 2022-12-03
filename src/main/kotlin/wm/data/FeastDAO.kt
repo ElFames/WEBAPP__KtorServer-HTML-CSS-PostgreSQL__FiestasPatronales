@@ -1,9 +1,6 @@
 package wm.data
 
-import wm.models.City
-import wm.models.Feast
-import wm.models.Town
-import wm.models.User
+import wm.models.*
 
 class FeastDAO {
     fun addFeast(name: String, city: String, town: String, dates: String, likes: Int, image: String, description: String) {
@@ -39,5 +36,10 @@ class FeastDAO {
             this.role = role
         }
         DataBase.addUser(user)
+    }
+
+    fun searchFeast(name: String): List<Feast> {
+        val regex = Regex(".*$name.*")
+        return Feast.find { Feasts.name like regex.pattern }.toList()
     }
 }
