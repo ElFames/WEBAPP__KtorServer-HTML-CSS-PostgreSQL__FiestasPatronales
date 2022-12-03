@@ -15,7 +15,7 @@ class LayoutTemplate(private val feastDAO: FeastDAO) : Template<HTML> {
         }
         body {
             header {
-                a("/fiestaspatronales/home") {
+                a("/fiestaspatronales") {
                     img(classes="logo") {
                         src = "/static/logo.png"
                         alt = "logo"
@@ -57,7 +57,7 @@ class LayoutTemplate(private val feastDAO: FeastDAO) : Template<HTML> {
                         ul {
                             li {
                                 a(classes="enlace") {
-                                    href = "/fiestaspatronales/home"
+                                    href = "/fiestaspatronales"
                                     +"Inicio-Resumen"
                                 }
                             }
