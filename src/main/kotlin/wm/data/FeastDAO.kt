@@ -3,7 +3,10 @@ package wm.data
 import wm.models.*
 
 class FeastDAO {
-    fun addFeast(name: String, city: String, town: String, dates: String, likes: Int, image: String, description: String) {
+    fun connect() {
+        DataBase.init()
+    }
+    fun addFeast(name: String, dates: String, city: String, town: String?, likes: Int, image: ByteArray?, description: String?) {
         val feast = Feast.new {
             this.name = name
             this.city = city
