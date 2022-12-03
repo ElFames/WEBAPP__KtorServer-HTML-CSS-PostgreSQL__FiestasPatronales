@@ -4,7 +4,7 @@ import io.ktor.server.html.*
 import kotlinx.html.*
 import wm.data.FeastDAO
 
-class LayoutTemplate(val feastDAO: FeastDAO) : Template<HTML> {
+class LayoutTemplate(private val feastDAO: FeastDAO) : Template<HTML> {
     lateinit var content: String
 
     override fun HTML.apply() {
