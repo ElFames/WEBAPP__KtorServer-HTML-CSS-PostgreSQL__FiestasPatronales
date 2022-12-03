@@ -11,14 +11,43 @@ class LayoutTemplate(val feastDAO: FeastDAO) : Template<HTML> {
         head {
             link(rel = "icon", href = "/static/logo.png", type="image/png")
             link(rel = "stylesheet", href = "/static/style.css", type = "text/css")
+            link(rel = "stylesheet", href = "/static/homeStyle.css", type = "text/css")
         }
         body {
             header {
                 a("/fiestaspatronales/home") {
-                    img {
+                    img(classes="logo") {
                         src = "/static/logo.png"
                         alt = "logo"
                     }
+                }
+                img {
+                    src = "/static/carnaval.JPG"
+                    alt = "logo"
+                }
+                img {
+                    src = "/static/fallas.JPG"
+                    alt = "logo"
+                }
+                img {
+                    src = "/static/feriabril.JPG"
+                    alt = "logo"
+                }
+                img {
+                    src = "/static/pilar.JPG"
+                    alt = "logo"
+                }
+                img {
+                    src = "/static/sanfermin.JPG"
+                    alt = "logo"
+                }
+                img {
+                    src = "/static/sanjuan.JPG"
+                    alt = "logo"
+                }
+                img {
+                    src = "/static/semanasanta.JPG"
+                    alt = "logo"
                 }
             }
 

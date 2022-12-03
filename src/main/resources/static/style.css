@@ -2,32 +2,36 @@ header {
     position: fixed;
     text-align: center;
     width: 99%;
-    display: block;
+    display: flex;
+    justify-content: start;
     top: 0;
     background-color: rgb(43, 202, 218);
     z-index: +1;
     border: 1px solid black;
-    height: 118px;
+    height: 80px;
 }
 header img {
-    width: 1000px;
-    height: 115px;
+    width: 200px;
+    height: 80px;
+}
+header img.logo {
+    margin-left: 40px;
+    margin-right: 15px;
+    width: 200px;
+    height: 75px;
 }
 main div.menu {
     border: 1px solid black;
     background-color: rgb(43, 202, 218);
-    height: 580px;
+    height: 590px;
     width: 330px;
 }
 main div.menu nav ul {
     border-bottom: 1px solid black;
-    border-top: 1px solid black;
 }
 main div.menu nav ul li {
     display: block;
-    margin-bottom: 2px;
-    margin-top: 2px;
-    padding: 5px 20px;
+    padding: 3px 20px 12px;
 }
 a.enlace {
     color: black;
@@ -40,10 +44,10 @@ a.enlace:hover {
 }
 main {
     display: flex;
-    margin-top: 118px;
+    margin-top: 80px;
 }
 .maincontent {
     width: 99%;
     background-image: url('https://img.freepik.com/vector-gratis/fondo-marco-fiesta-ano-nuevo-festivo-cintas-vector-azul-espacio-diseno_53876-114711.jpg?w=2000');
-    padding: 20px 40px;
+    padding: 40px 50px;
 }
