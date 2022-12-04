@@ -15,9 +15,8 @@ class SearchResultTemplate(private val searchResult: List<Feast>?) : Template<Fl
                         p { text(feast.name) }
                         onClick = "window.location.href = '/fiestaspatronales/${feast.id}'"
                     }
-                } ?: p { +"No se han encontrado resultados" }
+                } ?: p { +"No se han encontrado resultados, puedes subir tu fiesta en 'APORTAR' para que otros la encuentren" }
             }
         }
     }
 }
-

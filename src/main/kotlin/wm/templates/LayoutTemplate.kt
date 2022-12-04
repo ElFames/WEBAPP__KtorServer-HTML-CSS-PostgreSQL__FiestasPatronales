@@ -10,8 +10,9 @@ class LayoutTemplate(private val feastDAO: FeastDAO) : Template<HTML> {
         head {
             link(rel = "icon", href = "/static/logo.png", type="image/png")
             link(rel = "stylesheet", href = "/static/style.css", type = "text/css")
-            link(rel = "stylesheet", href = "/static/homeStyle.css", type = "text/css")
+            link(rel = "stylesheet", href = "/static/newFeastStyle.css", type = "text/css")
             link(rel = "stylesheet", href = "/static/contactStyle.css", type = "text/css")
+            link(rel = "stylesheet", href = "/static/searcherStyle.css", type = "text/css")
         }
         body {
             header {
@@ -21,110 +22,58 @@ class LayoutTemplate(private val feastDAO: FeastDAO) : Template<HTML> {
                         alt = "logo"
                     }
                 }
-                img {
-                    src = "/static/carnaval.JPG"
-                    alt = "logo"
-                }
-                img {
-                    src = "/static/fallas.JPG"
-                    alt = "logo"
-                }
-                img {
-                    src = "/static/feriabril.JPG"
-                    alt = "logo"
-                }
-                img {
-                    src = "/static/pilar.JPG"
-                    alt = "logo"
-                }
-                img {
-                    src = "/static/sanfermin.JPG"
-                    alt = "logo"
-                }
-                img {
-                    src = "/static/sanjuan.JPG"
-                    alt = "logo"
-                }
-                img {
-                    src = "/static/semanasanta.JPG"
-                    alt = "logo"
-                }
-            }
-
-            main {
-                div("menu") {
-                    nav {
-                        ul {
-                            li {
-                                a(classes="enlace") {
-                                    href = "/fiestaspatronales/home"
-                                    +"Inicio-Resumen"
-                                }
+                nav {
+                    ul("menu") {
+                        li {
+                            a(classes="enlace") {
+                                href = "/fiestaspatronales/home"
+                                +"INICIO | "
                             }
                         }
-                        ul {
-                            li{
-                                a(classes="enlace") {
-                                    href = "/fiestaspatronales/searcher"
-                                    +"Buscador de fiestas"
-                                }
+                        li{
+                            a(classes="enlace") {
+                                href = "/fiestaspatronales/searcher"
+                                +"BUSCADOR | "
                             }
                         }
-                        ul {
-                            li{
-                                a(classes="enlace") {
-                                    href = "/fiestaspatronales/popular"
-                                    +"Fiestas populares"
-                                }
+                        li{
+                            a(classes="enlace") {
+                                href = "/fiestaspatronales/nextRoute"
+                                +"RUTAS | "
                             }
                         }
-                        ul {
-                            li{
-                                a(classes="enlace") {
-                                    href = "/fiestaspatronales/nextRoute"
-                                    +"Proximas Rutas"
-                                }
+                        li{
+                            a(classes="enlace") {
+                                href = "/fiestaspatronales/contact"
+                                +"CONTACTO | "
                             }
                         }
-                        ul {
-                            li{
-                                a(classes="enlace") {
-                                    href = "/fiestaspatronales/contact"
-                                    +"Contactanos"
-                                }
+                        li{
+                            a(classes="enlace") {
+                                href = "/fiestaspatronales/newFeast"
+                                +"APORTAR | "
                             }
                         }
-                        ul {
-                            li{
-                                a(classes="enlace") {
-                                    href = "/fiestaspatronales/newFeast"
-                                    +"Sube una fiesta"
-                                }
+                        li{
+                            a(classes="enlace") {
+                                href = "/fiestaspatronales/login"
+                                +"UNLOGIN | "
                             }
                         }
-                        ul {
-                            li{
-                                a(classes="enlace") {
-                                    href = "/fiestaspatronales/login"
-                                    +"Cambiar de usuario"
-                                }
-                            }
-                        }
-                        ul {
-                            li{
-                                a(classes="enlace") {
-                                    href = "/fiestaspatronales/api"
-                                    +"Endpoints de la Api"
-                                }
+                        li{
+                            a(classes="enlace") {
+                                href = "/fiestaspatronales/api"
+                                +"API"
                             }
                         }
                     }
                 }
+            }
+            main {
                 div ("maincontent"){
                     when (content) {
                         "home" -> this.insert(HomeTemplate(feastDAO), TemplatePlaceholder())
                         "searcher" -> this.insert(SearcherTemplate(feastDAO), TemplatePlaceholder())
-                        "popular" -> this.insert(PopularTemplate(feastDAO), TemplatePlaceholder())
                         "nextRoute" -> this.insert(NextRouteTemplate(feastDAO), TemplatePlaceholder())
                         "contact" -> this.insert(ContactTemplate(), TemplatePlaceholder())
                         "api" -> this.insert(ApiTemplate(), TemplatePlaceholder())

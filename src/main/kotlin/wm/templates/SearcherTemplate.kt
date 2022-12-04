@@ -6,20 +6,27 @@ import wm.data.FeastDAO
 import wm.models.Feast
 
 data class SearcherTemplate(val feastDAO: FeastDAO) : Template<FlowContent> {
-    var searchResult: List<Feast>? = null
+    private var searchResult: List<Feast>? = null
     override fun FlowContent.apply() {
-        h1 {
-            +"Buscador de fiestas patronales"
-        }
-        div {
-            id = "searcher-container"
-            searchInput {
-                id = "searcher"
-                name = "search"
-                placeholder = "Busca una fiesta"
-                onChange = "${searchHandler(name)}"
+        div("mainbox") {
+            table {
+                tr {
+                    th {
+                        +"Encuentra tu fiesta"
+                    }
+                }
+                tr {
+                    td {
+                        searchInput {
+                            id = "searcher"
+                            name = "search"
+                            placeholder = "Busca una fiesta"
+                            onChange = "${searchHandler(name)}"
+                        }
+                    }
+                }
             }
-        this.insert(SearchResultTemplate(searchResult), TemplatePlaceholder())
+            this.insert(SearchResultTemplate(searchResult), TemplatePlaceholder())
         }
     }
     private fun searchHandler(name: String) {

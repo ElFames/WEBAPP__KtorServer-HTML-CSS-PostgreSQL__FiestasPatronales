@@ -23,6 +23,9 @@ fun Route.fiestasPatronalesRouting() {
         get {
             call.respondRedirect("fiestaspatronales/home")
         }
+        get("/") {
+            call.respondRedirect("home")
+        }
         get("login") {
             call.respondHtmlTemplate(LoginTemplate()) {}
         }
@@ -44,7 +47,6 @@ fun Route.fiestasPatronalesRouting() {
                 }
             }
         }
-
         post("newUser") {
             val textForm = call.receiveText()
             val params = getParamsList(textForm)
@@ -63,14 +65,14 @@ fun Route.fiestasPatronalesRouting() {
                 call.respondRedirect("home")
             }
         }
-
         post("addFeast") {
-            val feastDataInList = multipartDataToFeast(call.receiveMultipart())
-            feastDAO.createCityAndTownIfNotExists(feastDataInList["town"]!!,feastDataInList["city"]!!)
-            feastDAO.addFeast(feastDataInList)
+            val feastData = multipartDataToFeast(call.receiveMultipart())
+            feastDAO.createCityAndTownIfNotExists(feastData["town"]!!,feastData["city"]!!)
+            feastDAO.addFeast(feastData)
             call.respondRedirect("home")
         }
 
+        // Insert Templates:
         get("home") {
             if (currentUser==null) call.respondRedirect("login")
             call.respondHtmlTemplate(LayoutTemplate(feastDAO)) {
@@ -87,12 +89,6 @@ fun Route.fiestasPatronalesRouting() {
             if (currentUser==null) call.respondRedirect("login")
             call.respondHtmlTemplate(LayoutTemplate(feastDAO)) {
                 this.content = "newFeast"
-            }
-        }
-        get("popular") {
-            if (currentUser==null) call.respondRedirect("login")
-            call.respondHtmlTemplate(LayoutTemplate(feastDAO)) {
-                this.content = "popular"
             }
         }
         get("nextRoute") {

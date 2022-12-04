@@ -1,0 +1,16 @@
+
+input {
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.button {
+    width: 120px;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+    background-color: #68ccd9;
+}
+#image_button {
+    color: #68ccd9;
+}
