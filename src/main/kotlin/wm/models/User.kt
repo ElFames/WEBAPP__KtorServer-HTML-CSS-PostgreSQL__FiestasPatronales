@@ -6,8 +6,6 @@ import org.jetbrains.exposed.dao.id.EntityID
 
 class User(id: EntityID<Int>): IntEntity(id) {
     companion object : IntEntityClass<User>(Users)
-    var name by Users.name
+    var nickname by Users.nickname
     var password by Users.password
-    var email by Users.email
-    var role by Users.role
 }

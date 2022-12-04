@@ -7,7 +7,7 @@ object Feasts: IntIdTable() {
     val dates = varchar("dates",50)
     val likes = integer("likes").default(0)
     val city = reference("city", Citys.name)
-    val town = reference("town", Towns.name).nullable()
-    val image = binary("image").nullable()
-    val description = varchar("description",500).nullable()
+    val town = reference("town", Towns.name)
+    val image = varchar("image",8000)
+    val description = varchar("description",500)
 }

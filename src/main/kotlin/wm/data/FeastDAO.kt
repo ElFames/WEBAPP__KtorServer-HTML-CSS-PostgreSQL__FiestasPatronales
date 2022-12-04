@@ -1,48 +1,74 @@
 package wm.data
 
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.transactions.transaction
 import wm.models.*
 
 class FeastDAO {
-    fun connect() {
-        DataBase.init()
-    }
-    fun addFeast(name: String, dates: String, city: String, town: String?, likes: Int, image: ByteArray?, description: String?) {
-        val feast = Feast.new {
-            this.name = name
-            this.city = city
-            this.town = town
-            this.dates = dates
-            this.likes = likes
-            this.image = image
-            this.description = description
-        }
-        DataBase.addFeast(feast)
-    }
+
     fun addCity(name: String) {
-        val city = City.new {
-            this.name = name
+        transaction {
+            City.new {
+                this.name = name
+            }
         }
-        DataBase.addCity(city)
     }
+
     fun addTown(name: String, city: String) {
-        val town = Town.new {
-            this.name = name
-            this.city = city
+        transaction {
+            Town.new {
+                this.name = name
+                this.city = city
+            }
         }
-        DataBase.addTown(town)
-    }
-    fun addUser(name: String, password: String, email: String, role: String) {
-        val user = User.new {
-            this.name = name
-            this.password = password
-            this.email = email
-            this.role = role
-        }
-        DataBase.addUser(user)
     }
 
     fun searchFeast(name: String): List<Feast> {
         val regex = Regex(".*$name.*")
         return Feast.find { Feasts.name like regex.pattern }.toList()
+    }
+
+    fun addFeast(feastDataInList: MutableList<String>) {
+        transaction {
+            Feast.new {
+                name = feastDataInList[0]
+                dates = feastDataInList[1]
+                city = feastDataInList[2]
+                town = feastDataInList[3]
+                description = feastDataInList[4]
+                image = feastDataInList[5]
+            }
+        }
+    }
+
+    fun checkUser(nickname: String?, password: String?): Boolean {
+        var checkOk = false
+        transaction {
+            val userList = User.all()
+            userList.forEach {
+                if (it.nickname == nickname && it.password == password) {
+                    checkOk = true
+                    return@forEach
+                }
+            }
+        }
+        return checkOk
+    }
+
+    fun getUser(nickname: String?, password: String?): User? {
+        var user: User? = null
+        transaction {
+            user = User.find { Users.nickname eq "$nickname" and (Users.password eq "$password") }.firstOrNull()
+        }
+        return user
+    }
+
+    fun newUser(newNickname: String, newPassword: String) {
+        transaction {
+            User.new {
+                nickname = newNickname
+                password = newPassword
+            }
+        }
     }
 }

@@ -6,12 +6,12 @@ import wm.data.FeastDAO
 
 class LayoutTemplate(private val feastDAO: FeastDAO) : Template<HTML> {
     lateinit var content: String
-
     override fun HTML.apply() {
         head {
             link(rel = "icon", href = "/static/logo.png", type="image/png")
             link(rel = "stylesheet", href = "/static/style.css", type = "text/css")
             link(rel = "stylesheet", href = "/static/homeStyle.css", type = "text/css")
+            link(rel = "stylesheet", href = "/static/contactStyle.css", type = "text/css")
         }
         body {
             header {
@@ -97,8 +97,24 @@ class LayoutTemplate(private val feastDAO: FeastDAO) : Template<HTML> {
                         ul {
                             li{
                                 a(classes="enlace") {
+                                    href = "/fiestaspatronales/newFeast"
+                                    +"Sube una fiesta"
+                                }
+                            }
+                        }
+                        ul {
+                            li{
+                                a(classes="enlace") {
+                                    href = "/fiestaspatronales/login"
+                                    +"Cambiar de usuario"
+                                }
+                            }
+                        }
+                        ul {
+                            li{
+                                a(classes="enlace") {
                                     href = "/fiestaspatronales/api"
-                                    +"Endpoint Api"
+                                    +"Endpoints de la Api"
                                 }
                             }
                         }
@@ -110,8 +126,9 @@ class LayoutTemplate(private val feastDAO: FeastDAO) : Template<HTML> {
                         "searcher" -> this.insert(SearcherTemplate(feastDAO), TemplatePlaceholder())
                         "popular" -> this.insert(PopularTemplate(feastDAO), TemplatePlaceholder())
                         "nextRoute" -> this.insert(NextRouteTemplate(feastDAO), TemplatePlaceholder())
-                        "contact" -> this.insert(ContactTemplate(feastDAO), TemplatePlaceholder())
-                        "api" -> this.insert(ApiTemplate(feastDAO), TemplatePlaceholder())
+                        "contact" -> this.insert(ContactTemplate(), TemplatePlaceholder())
+                        "api" -> this.insert(ApiTemplate(), TemplatePlaceholder())
+                        "newFeast" -> this.insert(NewFeastTemplate(), TemplatePlaceholder())
                     }
                 }
             }

@@ -3,12 +3,11 @@ package wm
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import wm.plugins.configureRouting
-import wm.plugins.configureSerialization
-import wm.plugins.configureTemplating
+import wm.data.DataBase
+import wm.plugins.*
 
 fun main() {
-    //DataBase.init()
+    DataBase.init()
     startWebApi()
 }
 fun Application.module() {

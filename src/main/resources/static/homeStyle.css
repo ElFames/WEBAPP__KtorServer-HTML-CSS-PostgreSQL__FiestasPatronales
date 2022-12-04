@@ -1,6 +1,6 @@
-.home{
-    background-color: rgba(248, 247, 247, 0.77);
-    padding: 50px;
+.mainbox{
+    background-color: rgba(248, 247, 247, 0.83);
+    padding: 25px 50px 30px;
     border-radius: 20px;
     border: 3px solid rgb(43, 202, 218);
 }
