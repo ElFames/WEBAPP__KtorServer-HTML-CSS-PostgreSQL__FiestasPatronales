@@ -1,10 +1,12 @@
 package wm.data
 
+import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import wm.models.*
 
 class FeastDAO {
+    val urlMaps = "https://www.google.com/maps/embed?pb="
 
     fun addCity(name: String) {
         transaction {
@@ -33,6 +35,7 @@ class FeastDAO {
     }
 
     fun addFeast(feastDataInList: MutableList<String>) {
+        feastDataInList.forEach { println(it) }
         transaction {
             Feast.new {
                 name = feastDataInList[0]
@@ -74,5 +77,13 @@ class FeastDAO {
                 password = newPassword
             }
         }
+    }
+
+    fun getAllFeasts(): SizedIterable<Feast>? {
+        var feastList: SizedIterable<Feast>? = null
+        transaction {
+            feastList = Feast.all()
+        }
+        return feastList
     }
 }

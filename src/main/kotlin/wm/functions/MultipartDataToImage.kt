@@ -12,7 +12,7 @@ suspend fun multipartDataToImage(multipartData: MultiPartData): MutableList<Stri
             is PartData.FormItem -> feastProperties.add(part.value)
             is PartData.FileItem-> {
                 imageInByteArray = part.streamProvider().readBytes()
-                feastProperties.add(imageInByteArray.toString())
+                feastProperties.add(4, imageInByteArray.toString())
             }
             else -> throw Exception("El formato del archivo no es válido")
         }
