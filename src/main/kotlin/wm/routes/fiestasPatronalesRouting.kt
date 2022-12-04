@@ -1,5 +1,6 @@
 package wm.routes
 
+import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.request.*
@@ -138,12 +139,11 @@ fun Route.fiestasPatronalesRouting() {
                 }
                 part.dispose()
             }
-            feastDAO.addFeast(name, dates, city, town, likes, image, description)
-            call.respondText("Film storage correctly", status = HttpStatusCode.Created)
+            // feastDAO.addFeast(name, dates, city, town, likes, image, description)
+            // call.respondText("Film storage correctly", status = HttpStatusCode.Created)
         }
     }
 }
-
 fun getParamsList(textForm: String): MutableList<String> {
     val params = mutableListOf<String>()
     textForm.reader().forEachLine { params.add(it.split('=')[1]) }
