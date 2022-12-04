@@ -23,9 +23,13 @@ class FeastDAO {
         }
     }
 
-    fun searchFeast(name: String): List<Feast> {
+    fun searchFeast(name: String): List<Feast>? {
+        var feasts: List<Feast>? = null
         val regex = Regex(".*$name.*")
-        return Feast.find { Feasts.name like regex.pattern }.toList()
+        transaction {
+            feasts = Feast.find { Feasts.name like regex.pattern }.toList()
+        }
+        return feasts
     }
 
     fun addFeast(feastDataInList: MutableList<String>) {

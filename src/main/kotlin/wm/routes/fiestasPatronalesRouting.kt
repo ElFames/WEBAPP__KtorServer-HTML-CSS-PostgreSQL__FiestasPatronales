@@ -15,7 +15,7 @@ import wm.templates.*
 
 fun Route.fiestasPatronalesRouting() {
     val feastDAO = FeastDAO()
-    var currentUser: User? = feastDAO.getUser("miguel","miguel")
+    var currentUser: User? = null
 
     route("/fiestaspatronales") {
 

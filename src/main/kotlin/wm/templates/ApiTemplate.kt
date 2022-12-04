@@ -1,11 +1,10 @@
 package wm.templates
 
 import io.ktor.server.html.*
-import kotlinx.html.FlowContent
-import kotlinx.html.h1
+import kotlinx.html.*
 import wm.data.FeastDAO
 
-data class ApiTemplate(val feastDAO: FeastDAO) : Template<FlowContent> {
+class ApiTemplate: Template<FlowContent> {
 
     override fun FlowContent.apply() {
         div("mainbox") {
