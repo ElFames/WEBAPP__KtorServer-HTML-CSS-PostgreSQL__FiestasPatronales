@@ -15,7 +15,7 @@ class LayoutTemplate(private val feastDAO: FeastDAO) : Template<HTML> {
         }
         body {
             header {
-                a("/fiestaspatronales/home") {
+                a("/fiestaspatronales") {
                     img(classes="logo") {
                         src = "/static/logo.png"
                         alt = "logo"

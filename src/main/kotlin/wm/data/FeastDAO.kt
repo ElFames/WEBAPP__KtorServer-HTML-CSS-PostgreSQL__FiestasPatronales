@@ -1,7 +1,6 @@
 package wm.data
 
 import org.jetbrains.exposed.sql.SizedIterable
-import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import wm.models.*
 
@@ -34,49 +33,32 @@ class FeastDAO {
         return feasts
     }
 
-    fun addFeast(feastDataInList: MutableList<String>) {
-        feastDataInList.forEach { println(it) }
+    fun addFeast(feastDataInList: Map<String, String>) {
         transaction {
             Feast.new {
-                name = feastDataInList[0]
-                dates = feastDataInList[1]
-                city = feastDataInList[2]
-                town = feastDataInList[3]
-                description = feastDataInList[4]
-                image = feastDataInList[5]
+                name = feastDataInList["name"]!!
+                dates = feastDataInList["dates"]!!
+                city = feastDataInList["city"]!!
+                town = feastDataInList["town"]!!
+                description = feastDataInList["description"]!!
+                image = feastDataInList["image"]!!
             }
         }
     }
 
-    fun checkUser(nickname: String?, password: String?): Boolean {
-        var checkOk = false
+    fun checkCity(cityName: String): Boolean {
+        var city: SizedIterable<City>? = null
         transaction {
-            val userList = User.all()
-            userList.forEach {
-                if (it.nickname == nickname && it.password == password) {
-                    checkOk = true
-                    return@forEach
-                }
-            }
+            city = City.find { Citys.name eq cityName }
         }
-        return checkOk
+        return city != null
     }
-
-    fun getUser(nickname: String?, password: String?): User? {
-        var user: User? = null
+    fun checkTown(townName: String): Boolean {
+        var town: SizedIterable<City>? = null
         transaction {
-            user = User.find { Users.nickname eq "$nickname" and (Users.password eq "$password") }.firstOrNull()
+            town = City.find { Citys.name eq townName }
         }
-        return user
-    }
-
-    fun newUser(newNickname: String, newPassword: String) {
-        transaction {
-            User.new {
-                nickname = newNickname
-                password = newPassword
-            }
-        }
+        return town != null
     }
 
     fun getAllFeasts(): SizedIterable<Feast>? {
@@ -85,5 +67,12 @@ class FeastDAO {
             feastList = Feast.all()
         }
         return feastList
+    }
+
+    fun createCityAndTownIfNotExists(town: String, city: String) {
+        if (checkCity(city))
+            addCity(city)
+        if (checkTown(town))
+            addTown(town,city)
     }
 }

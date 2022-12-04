@@ -1,6 +1,5 @@
 package wm.routes
 
-import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.request.*
@@ -9,18 +8,20 @@ import io.ktor.server.routing.*
 import kotlinx.html.body
 import kotlinx.html.h1
 import wm.data.FeastDAO
-import wm.functions.multipartDataToImage
+import wm.data.UsersDAO
+import wm.functions.multipartDataToFeast
 import wm.models.User
 import wm.templates.*
 
 fun Route.fiestasPatronalesRouting() {
     val feastDAO = FeastDAO()
+    val userDAO = UsersDAO()
     var currentUser: User? = null
 
     route("/fiestaspatronales") {
 
-        get("/") {
-            call.respondRedirect("home")
+        get {
+            call.respondRedirect("fiestaspatronales/home")
         }
         get("login") {
             call.respondHtmlTemplate(LoginTemplate()) {}
@@ -32,8 +33,8 @@ fun Route.fiestasPatronalesRouting() {
             val nickname = params[0]
             val password = params[1]
 
-            if (feastDAO.checkUser(nickname, password)) {
-                currentUser = feastDAO.getUser(nickname, password)
+            if (userDAO.checkUser(nickname, password)) {
+                currentUser = userDAO.getUser(nickname, password)
                 call.respondRedirect("home")
             } else {
                 call.respondHtml {
@@ -50,21 +51,22 @@ fun Route.fiestasPatronalesRouting() {
             val nickname = params[0]
             val password = params[1]
 
-            if (feastDAO.checkUser(nickname, password)) {
+            if (userDAO.checkUser(nickname, password)) {
                 call.respondHtml {
                     body {
                         h1 { + "El usuario: $nickname ya esta registrado..." }
                     }
                 }
             } else {
-                feastDAO.newUser(nickname, password)
-                currentUser = feastDAO.getUser(nickname, password)
+                userDAO.newUser(nickname, password)
+                currentUser = userDAO.getUser(nickname, password)
                 call.respondRedirect("home")
             }
         }
 
         post("addFeast") {
-            val feastDataInList = multipartDataToImage(call.receiveMultipart())
+            val feastDataInList = multipartDataToFeast(call.receiveMultipart())
+            feastDAO.createCityAndTownIfNotExists(feastDataInList["town"]!!,feastDataInList["city"]!!)
             feastDAO.addFeast(feastDataInList)
             call.respondRedirect("home")
         }
@@ -110,37 +112,6 @@ fun Route.fiestasPatronalesRouting() {
             call.respondHtmlTemplate(LayoutTemplate(feastDAO)) {
                 this.content = "api"
             }
-        }
-        post("/newFeast") {
-            val partData = call.receiveMultipart()
-            var name = ""
-            var dates = ""
-            var city = ""
-            var town = ""
-            var likes = 0
-            var description: String = ""
-            var image: ByteArray? = null
-            partData.forEachPart { part ->
-                when (part) {
-                    is PartData.FormItem -> {
-                        when (part.name){
-                            "name" -> name = part.value
-                            "dates" -> dates = part.value
-                            "city" -> city = part.value
-                            "town" -> town = part.value
-                            "likes" -> likes = part.value.toInt()
-                            else -> description = part.value
-                        }
-                    }
-                    is PartData.FileItem -> {
-                        image = part.streamProvider().readBytes()
-                    }
-                    else -> {}
-                }
-                part.dispose()
-            }
-            // feastDAO.addFeast(name, dates, city, town, likes, image, description)
-            // call.respondText("Film storage correctly", status = HttpStatusCode.Created)
         }
     }
 }
