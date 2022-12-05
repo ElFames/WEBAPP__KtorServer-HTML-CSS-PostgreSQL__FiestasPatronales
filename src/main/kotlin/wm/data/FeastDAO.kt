@@ -3,6 +3,7 @@ package wm.data
 import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.transactions.transaction
 import wm.models.*
+import java.lang.Exception
 
 class FeastDAO {
     val urlMaps = "https://www.google.com/maps/embed?pb="
@@ -15,22 +16,28 @@ class FeastDAO {
         }
     }
 
-    fun addTown(name: String, city: String) {
+    fun addTown(name: String, cityName: String) {
+        val city = getCity(cityName)
         transaction {
             Town.new {
                 this.name = name
-                this.city = city
+                this.city = city?.id ?:
+                throw Exception("City not found")
             }
         }
     }
 
-    fun searchFeast(name: String): List<Feast>? {
-        var feasts: List<Feast>? = null
-        val regex = Regex(".*$name.*")
-        transaction {
-            feasts = Feast.find { Feasts.name like regex.pattern }.toList()
+    private fun getCity(cityName: String): City? {
+        return transaction {
+            City.find { Citys.name eq cityName }.firstOrNull()
         }
-        return feasts
+    }
+
+    fun searchFeast(name: String): List<Feast> {
+        val regex = Regex(".*$name.*")
+        return transaction {
+            Feast.find { Feasts.name like regex.pattern }.toList()
+        }
     }
 
     fun addFeast(feastDataInList: Map<String, String>) {
@@ -38,25 +45,29 @@ class FeastDAO {
             Feast.new {
                 name = feastDataInList["name"]!!
                 dates = feastDataInList["dates"]!!
-                city = feastDataInList["city"]!!
-                town = feastDataInList["town"]!!
+                city = getCity(feastDataInList["city"]!!)!!.id
+                town = getTown(feastDataInList["town"]!!)!!.id
                 description = feastDataInList["description"]!!
                 image = feastDataInList["image"]!!
             }
         }
     }
 
+    private fun getTown(townName: String): Town? {
+        return transaction {
+            Town.find { Towns.name eq townName }.firstOrNull()
+        }
+    }
+
     fun checkCity(cityName: String): Boolean {
-        var city: SizedIterable<City>? = null
-        transaction {
-            city = City.find { Citys.name eq cityName }
+       val city = transaction {
+            City.find { Citys.name eq cityName }.firstOrNull()
         }
         return city != null
     }
     fun checkTown(townName: String): Boolean {
-        var town: SizedIterable<City>? = null
-        transaction {
-            town = City.find { Citys.name eq townName }
+        val town = transaction {
+            Town.find { Towns.name eq townName }.firstOrNull()
         }
         return town != null
     }
@@ -70,9 +81,15 @@ class FeastDAO {
     }
 
     fun createCityAndTownIfNotExists(town: String, city: String) {
-        if (checkCity(city))
+        if (!checkCity(city))
             addCity(city)
-        if (checkTown(town))
+        if (!checkTown(town))
             addTown(town,city)
+    }
+
+    fun getAllCitys(): SizedIterable<City> {
+        return transaction {
+            City.all()
+        }
     }
 }

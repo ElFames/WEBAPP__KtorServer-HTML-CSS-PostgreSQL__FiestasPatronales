@@ -13,7 +13,7 @@ object DataBase {
     fun init() {
         val driver = "org.postgresql.Driver"
         val dbUrl = "jdbc:postgresql://localhost:5432/postgres"
-        val database = Database.connect(dbUrl, driver, user="postgres", password="")
+        val database = Database.connect(dbUrl, driver, user="postgres", password="fames")
         transaction(database) {
             SchemaUtils.create(Citys,Towns,Feasts,Users)
         }

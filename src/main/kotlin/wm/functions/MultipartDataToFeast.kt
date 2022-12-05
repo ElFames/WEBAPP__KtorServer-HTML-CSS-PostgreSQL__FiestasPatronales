@@ -15,8 +15,8 @@ suspend fun multipartDataToFeast(multipartData: MultiPartData): Map<String, Stri
                     "dates" -> feastProperties[part.name!!] = part.value
                     "city" -> feastProperties[part.name!!] = part.value
                     "town" -> feastProperties[part.name!!] = part.value
-                    "likes" -> feastProperties[part.name!!] = part.value
                     "description" -> feastProperties[part.name!!] = part.value
+                    "likes" -> feastProperties[part.name!!] = part.value
                     else -> throw Exception("Faltan campos por rellenar")
                 }
             }

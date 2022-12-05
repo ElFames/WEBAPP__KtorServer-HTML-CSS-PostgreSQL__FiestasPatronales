@@ -19,17 +19,18 @@ class ApiTemplate: Template<FlowContent> {
                         +"Esto es una mini introduccion en modo de parrafon para que te pongas a leer un rato, no hay secreto aqui el codigo es libre siempre y cuando pagues pero es gratis si no es dinero lo que pagas."
                         br
                         br
-                        p { +"GET /api/fiestaspatronales" }
+                        p { +"GET /api/fiestaspatronales/all" }
+                        p { +"GET /api/fiestaspatronales/feasts" }
+                        p { +"GET /api/fiestaspatronales/citys" }
+                        p { +"GET /api/fiestaspatronales/towns" }
                         p { +"GET /api/fiestaspatronales/{id}" }
                         p { +"GET /api/fiestaspatronales/{id}/likes" }
                         p { +"GET /api/fiestaspatronales/{id}/comments" }
                         p { +"GET /api/fiestaspatronales/{id}/images" }
-                        p { +"POST /api/fiestaspatronales/{id}/likes" }
+
+                        p { +"PUT /api/fiestaspatronales/{id}/like" }
+                        p { +"PUT /api/fiestaspatronales/{id}/unlike" }
                         p { +"POST /api/fiestaspatronales/{id}/comments" }
-                        p { +"POST /api/fiestaspatronales/add_feast" }
-                        p { +"POST /api/fiestaspatronales/add_city" }
-                        p { +"POST /api/fiestaspatronales/add_town" }
-                        p { +"POST /api/fiestaspatronales/add_user" }
                     }
                 }
             }

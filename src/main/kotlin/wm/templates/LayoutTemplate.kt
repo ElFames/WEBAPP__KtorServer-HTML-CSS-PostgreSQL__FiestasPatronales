@@ -77,7 +77,7 @@ class LayoutTemplate(private val feastDAO: FeastDAO) : Template<HTML> {
                         "nextRoute" -> this.insert(NextRouteTemplate(feastDAO), TemplatePlaceholder())
                         "contact" -> this.insert(ContactTemplate(), TemplatePlaceholder())
                         "api" -> this.insert(ApiTemplate(), TemplatePlaceholder())
-                        "newFeast" -> this.insert(NewFeastTemplate(), TemplatePlaceholder())
+                        "newFeast" -> this.insert(NewFeastTemplate(feastDAO), TemplatePlaceholder())
                     }
                 }
             }

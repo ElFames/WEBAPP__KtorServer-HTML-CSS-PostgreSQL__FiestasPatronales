@@ -7,6 +7,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.html.body
 import kotlinx.html.h1
+import org.jetbrains.exposed.sql.transactions.transaction
 import wm.data.FeastDAO
 import wm.data.UsersDAO
 import wm.functions.multipartDataToFeast
