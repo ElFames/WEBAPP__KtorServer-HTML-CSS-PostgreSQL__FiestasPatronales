@@ -1,5 +1,9 @@
-.comentario {
+.comment {
     padding: 5px 20px 5px;
     width: 350px;
     height: 100px;
+    margin-bottom: 20px;
+}
+#email {
+    width: 370px;
 }

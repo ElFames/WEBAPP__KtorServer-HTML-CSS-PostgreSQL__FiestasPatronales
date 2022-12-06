@@ -2,23 +2,33 @@ package wm.templates
 
 import io.ktor.server.html.*
 import kotlinx.html.*
-import wm.data.FeastDAO
+import org.jetbrains.exposed.sql.transactions.transaction
+import wm.data.DAOInstances
 
-data class HomeTemplate(val feastDAO: FeastDAO) : Template<FlowContent> {
+data class HomeTemplate(val dao: DAOInstances) : Template<FlowContent> {
+    private val feastDAO = dao.feastDAO
+    private val cityDAO = dao.cityDAO
+    private var currentCity = ""
     override fun FlowContent.apply() {
         div("mainbox") {
-            table {
-                tr {
-                    th {
-                        +"Fiestas Populares de España"
-                    }
-                }
-                tr {
-                    td {
-                        +"Esto es un resumen del significado de las fiestas patronales que las hay en todas las comunidades practicamente, si te pones a buscar algo encontraras pero bueno tampoco hay gran cosa"
-                        br
-                        br
-                        +"El diseño es una mierda y esas fotos de ahi arriba me estan poniendo nervioso, luego hay diseños por ahí con una pinta que te cagas y son un desastre"
+            h2 {
+                +"Fiestas Populares de España"
+            }
+            transaction {
+                feastDAO.getAllFeasts().groupBy {
+                    it.city
+                }.forEach {
+                    div(classes="feastLine") {
+                        p("city") {
+                            +it.key.name
+                            br;br
+                            it.value.forEach {
+                                a {
+                                    href = "${it.id.value}"
+                                    +it.name
+                                }
+                            }
+                        }
                     }
                 }
             }

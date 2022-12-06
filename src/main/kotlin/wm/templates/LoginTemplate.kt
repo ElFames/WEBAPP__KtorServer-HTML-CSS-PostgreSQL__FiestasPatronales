@@ -54,7 +54,6 @@ class LoginTemplate: Template<HTML> {
                         }
                     }
                 }
-
             }
         }
     }

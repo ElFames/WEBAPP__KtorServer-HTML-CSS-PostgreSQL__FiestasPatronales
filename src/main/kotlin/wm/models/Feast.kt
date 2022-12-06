@@ -9,8 +9,8 @@ class Feast(id: EntityID<Int>): IntEntity(id) {
     var name by Feasts.name
     var dates by Feasts.dates
     var likes by Feasts.likes
-    var town by Feasts.townId
-    var city by Feasts.cityId
+    var town by Town referencedOn Feasts.townId
+    var city by City referencedOn Feasts.cityId
     var image by Feasts.image
     var description by Feasts.description
 }

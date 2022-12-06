@@ -7,45 +7,45 @@ class ContactTemplate: Template<FlowContent> {
 
     override fun FlowContent.apply() {
         div("mainbox") {
-            table {
-                tr {
-                    th {
-                        +"Envianos tu comentario o sugerencia!"
-                    }
+            h2 {
+                +"Envianos tu comentario o sugerencia!"
+            }
+            p {
+                +"Autores responsables de esta obra de arte:"
+                br
+                +" - Unos tios del Itb"
+            }
+            p {
+                +"Para un kebab en condiciones llamar a: 659123648"
+                br
+                +"Para un coche que se rompe solo llamar a: 621489224"
+            }
+            p {
+                +"Dejanos tu correo y tu comentario, duda o sugerencia"
+            }
+            form {
+                action = "/fiestaspatronales/comentario"
+                encType = FormEncType.textPlain
+                method = FormMethod.post
+                input {
+                    id = "email"
+                    name = "email"
+                    type = InputType.email
+                    placeholder = "Escribe tu email"
+                    required = true
                 }
-                tr {
-                    td {
-                        +"Autores responsables de esta obra de arte:"
-                        br
-                        +" - Unos tios del Itb"
-                        br
-                        br
-                        +"Para un kebab en condiciones llamar a: 659123648"
-                        br
-                        +"Para un coche que se rompe solo llamar a: 621489224"
-                        br
-                        br
-                        +"Si de verdad vas a dejar un comentario puedes hacerlo aquí, aunque yo me lo pensaría antes de pulsar ese botón"
-                        br
-                        br
-                        form {
-                            action = "/fiestaspatronales/comentario"
-                            encType = FormEncType.textPlain
-                            method = FormMethod.post
-
-                            input(classes="comentario") {
-                                name = "comentario"
-                                type = InputType.text
-                                placeholder = "Escribe tu comentario"
-                                required = true
-                            }
-                            input(classes="button"){
-                                type = InputType.submit
-                                value = "Enviar"
-                                attributes["aria-selected"] = "true"
-                            }
-                        }
-                    }
+                br
+                input(classes="comment") {
+                    name = "comment"
+                    type = InputType.text
+                    placeholder = "Escribe tu comentario"
+                    required = true
+                }
+                br
+                input(classes="button"){
+                    type = InputType.submit
+                    value = "Enviar"
+                    attributes["aria-selected"] = "true"
                 }
             }
         }

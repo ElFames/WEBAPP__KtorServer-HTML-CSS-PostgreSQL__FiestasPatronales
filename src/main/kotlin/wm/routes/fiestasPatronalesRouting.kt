@@ -7,17 +7,16 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.html.body
 import kotlinx.html.h1
-import org.jetbrains.exposed.sql.transactions.transaction
-import wm.data.FeastDAO
-import wm.data.UsersDAO
+import wm.data.DAOInstances
 import wm.functions.multipartDataToFeast
 import wm.models.User
 import wm.templates.*
 
 fun Route.fiestasPatronalesRouting() {
-    val feastDAO = FeastDAO()
-    val userDAO = UsersDAO()
-    var currentUser: User? = null
+    val dao = DAOInstances()
+    val feastDAO = dao.feastDAO
+    val userDAO = dao.userDAO
+    var currentUser: User? = userDAO.getUser("admin","admin")
 
     route("/fiestaspatronales") {
 
@@ -43,7 +42,7 @@ fun Route.fiestasPatronalesRouting() {
             } else {
                 call.respondHtml {
                     body {
-                        h1 { +"ERROR 300 ---> No existe el usuario: $nickname..." }
+                        h1 { +"Nombre y/o contraseña incorrecta para el usuario: $nickname..." }
                     }
                 }
             }
@@ -68,45 +67,53 @@ fun Route.fiestasPatronalesRouting() {
         }
         post("addFeast") {
             val feastData = multipartDataToFeast(call.receiveMultipart())
-            feastDAO.createCityAndTownIfNotExists(feastData["town"]!!,feastData["city"]!!)
+            feastDAO.createFKsIfNotExist(feastData["town"]!!,feastData["city"]!!)
             feastDAO.addFeast(feastData)
             call.respondRedirect("home")
         }
 
         // Insert Templates:
+        get("{id}") {
+            if (currentUser==null) call.respondRedirect("login")
+            val id = call.parameters["id"]
+            call.respondHtmlTemplate(LayoutTemplate(dao)) {
+                this.content = "detail"
+                this.tableId = id ?: ""
+            }
+        }
         get("home") {
             if (currentUser==null) call.respondRedirect("login")
-            call.respondHtmlTemplate(LayoutTemplate(feastDAO)) {
+            call.respondHtmlTemplate(LayoutTemplate(dao)) {
                 this.content = "home"
             }
         }
         get("searcher") {
             if (currentUser==null) call.respondRedirect("login")
-            call.respondHtmlTemplate(LayoutTemplate(feastDAO)) {
+            call.respondHtmlTemplate(LayoutTemplate(dao)) {
                 this.content = "searcher"
             }
         }
         get("newFeast") {
             if (currentUser==null) call.respondRedirect("login")
-            call.respondHtmlTemplate(LayoutTemplate(feastDAO)) {
+            call.respondHtmlTemplate(LayoutTemplate(dao)) {
                 this.content = "newFeast"
             }
         }
         get("nextRoute") {
             if (currentUser==null) call.respondRedirect("login")
-            call.respondHtmlTemplate(LayoutTemplate(feastDAO)) {
+            call.respondHtmlTemplate(LayoutTemplate(dao)) {
                 this.content = "nextRoute"
             }
         }
         get("contact") {
             if (currentUser==null) call.respondRedirect("login")
-            call.respondHtmlTemplate(LayoutTemplate(feastDAO)) {
+            call.respondHtmlTemplate(LayoutTemplate(dao)) {
                 this.content = "contact"
             }
         }
         get("api") {
             if (currentUser==null) call.respondRedirect("login")
-            call.respondHtmlTemplate(LayoutTemplate(feastDAO)) {
+            call.respondHtmlTemplate(LayoutTemplate(dao)) {
                 this.content = "api"
             }
         }

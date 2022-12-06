@@ -12,7 +12,7 @@ class SearchResultTemplate(private val searchResult: List<Feast>?) : Template<Fl
                 searchResult?.forEachIndexed { index, feast ->
                     div {
                         id = "result-$index"
-                        p { text(feast.name) }
+                        p { +feast.name }
                         onClick = "window.location.href = '/fiestaspatronales/${feast.id}'"
                     }
                 } ?: p { +"No se han encontrado resultados, puedes subir tu fiesta en 'APORTAR' para que otros la encuentren" }

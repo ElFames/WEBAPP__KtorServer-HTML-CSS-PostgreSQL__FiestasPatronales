@@ -21,6 +21,7 @@ suspend fun multipartDataToFeast(multipartData: MultiPartData): Map<String, Stri
                 }
             }
             is PartData.FileItem-> {
+                println(part.contentType)
                 imageInByteArray = part.streamProvider().readBytes()
                 feastProperties[part.name!!] = imageInByteArray.toString()
             }

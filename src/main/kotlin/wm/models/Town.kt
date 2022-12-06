@@ -8,5 +8,5 @@ class Town(id: EntityID<Int>): IntEntity(id) {
     companion object : IntEntityClass<Town>(Towns)
     var name by Towns.name
     var location by Towns.location
-    var city by Towns.cityId
+    var city by City referencedOn Towns.cityId
 }
