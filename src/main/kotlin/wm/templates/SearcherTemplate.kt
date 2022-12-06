@@ -7,22 +7,29 @@ import wm.models.Feast
 
 data class SearcherTemplate(val dao: DAOInstances) : Template<FlowContent> {
     private val feastDAO = dao.feastDAO
-    private var searchResult: List<Feast>? = null
+    private var searchResult: MutableList<Feast?> = mutableListOf()
     override fun FlowContent.apply() {
         div("mainbox") {
             h2 {
                 +"Encuentra tu fiesta"
             }
-            searchInput {
+            input {
+                type = InputType.search
                 id = "searcher"
                 name = "search"
+                value = ""
                 placeholder = "Busca una fiesta"
-                onChange = "${searchHandler(name)}"
+                onChange = "${searchHandler(value)}"
             }
-            this.insert(SearchResultTemplate(searchResult), TemplatePlaceholder())
+            searchResult.forEach {
+                this.insert(DetailTemplate(dao, it!!.id.value.toString()), TemplatePlaceholder())
+            }
         }
     }
     private fun searchHandler(name: String) {
-        searchResult = feastDAO.searchFeast(name)
+        searchResult.removeAll { true }
+        feastDAO.searchFeast(name).forEach {
+            searchResult.add(feastDAO.getFeast(it))
+        }
     }
 }

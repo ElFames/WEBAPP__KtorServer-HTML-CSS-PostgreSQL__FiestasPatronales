@@ -67,7 +67,6 @@ fun Route.fiestasPatronalesRouting() {
         }
         post("addFeast") {
             val feastData = multipartDataToFeast(call.receiveMultipart())
-            feastDAO.createFKsIfNotExist(feastData["town"]!!,feastData["city"]!!)
             feastDAO.addFeast(feastData)
             call.respondRedirect("home")
         }

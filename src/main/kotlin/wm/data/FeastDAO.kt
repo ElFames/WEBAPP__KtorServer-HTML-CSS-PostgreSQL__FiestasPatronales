@@ -1,16 +1,22 @@
 package wm.data
 
 import org.jetbrains.exposed.sql.SizedIterable
+import org.jetbrains.exposed.sql.lowerCase
 import org.jetbrains.exposed.sql.transactions.transaction
 import wm.models.*
 
 class FeastDAO(private val cityDAO: CityDAO, private val townDAO: TownDAO) {
 
-    fun searchFeast(name: String): List<Feast> {
+    fun searchFeast(name: String): MutableList<String> {
         val regex = Regex(".*$name.*")
-        return transaction {
-            Feast.find { Feasts.name like regex.pattern }.toList()
+        val resultList = mutableListOf<String>()
+        transaction {
+            getAllFeasts().forEach {
+                if (regex.find(it.name)?.value != null)
+                    resultList.add(regex.find(it.name)!!.value)
+            }
         }
+        return resultList
     }
 
     fun addFeast(feastDataInList: Map<String, String>) {
@@ -32,16 +38,15 @@ class FeastDAO(private val cityDAO: CityDAO, private val townDAO: TownDAO) {
         }
     }
 
-    fun createFKsIfNotExist(town: String, city: String) {
-        if (!cityDAO.checkCity(city))
-            cityDAO.addCity(city)
-        if (!townDAO.checkTown(town))
-            townDAO.addTown(town,city)
-    }
-
     fun getFeastById(feastId: Int?): Feast? {
         return transaction {
             Feast.find { Feasts.id eq feastId }.firstOrNull()
+        }
+    }
+
+    fun getFeast(feastName: String): Feast? {
+        return transaction {
+            Feast.find { Feasts.name eq feastName }.firstOrNull()
         }
     }
 }

@@ -4,18 +4,20 @@ import io.ktor.server.html.*
 import kotlinx.html.*
 import wm.models.Feast
 
-class SearchResultTemplate(private val searchResult: List<Feast>?) : Template<FlowContent> {
+class SearchResultTemplate(private val searchResult: MutableList<Feast?>) : Template<FlowContent> {
     override fun FlowContent.apply() {
         div("search-results") {
             id = "results"
             div {
-                searchResult?.forEachIndexed { index, feast ->
+                searchResult.forEachIndexed { index, feast ->
+                    if (feast == null)
+                        return@forEachIndexed
                     div {
                         id = "result-$index"
                         p { +feast.name }
-                        onClick = "window.location.href = '/fiestaspatronales/${feast.id}'"
+                        onClick = "window.location.href = '/fiestaspatronales/${feast.id.value}'"
                     }
-                } ?: p { +"No se han encontrado resultados, puedes subir tu fiesta en 'APORTAR' para que otros la encuentren" }
+                }
             }
         }
     }

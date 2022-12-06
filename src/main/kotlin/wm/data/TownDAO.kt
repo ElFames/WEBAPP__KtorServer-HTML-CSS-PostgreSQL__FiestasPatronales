@@ -12,14 +12,13 @@ import java.lang.Exception
 class TownDAO(private val cityDAO: CityDAO) {
 
     fun checkTown(townName: String): Boolean {
-        val town = transaction {
+        return transaction {
             Town.find { Towns.name eq townName }.firstOrNull()
-        }
-        return town != null
+        } != null
     }
 
     fun addTown(name: String, cityName: String) {
-        val city = cityDAO.getCityByName(cityName) ?: return
+        val city = cityDAO.getCityByName(cityName) ?: return // fk
         transaction {
             Town.new {
                 this.name = name

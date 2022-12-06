@@ -30,9 +30,4 @@ class CityDAO {
             City.find { Citys.name eq cityName }.firstOrNull()
         }
     }
-    fun getCityById(cityId: Int): City? {
-        return transaction {
-            City.find { Citys.id eq cityId }.firstOrNull()
-        }
-    }
 }
