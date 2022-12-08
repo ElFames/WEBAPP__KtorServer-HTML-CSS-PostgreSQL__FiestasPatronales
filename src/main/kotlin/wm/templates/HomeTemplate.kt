@@ -14,6 +14,9 @@ data class HomeTemplate(val dao: DAOInstances) : Template<FlowContent> {
             h2 {
                 +"Fiestas Populares de España"
             }
+            p { +"Bienvenidos a la pagina principal de fiestas patronales, este portal ha sido creado para fomentar el viaje por la peninsula haciendo referencia a nuestras tradiciones." }
+            p { +"Aqui tienes una lista de todas las fiestas que tenemos registradas agrupadas por ciudades. Si no encuentras tu fiesta aqui, puedes utilizar el buscador que disponemos." }
+            p { +"Si no obtienes resultados, puedes añadirla en el apartado 'Aportar' para que otras personas puedan encontrarla la proxima vez." }
             transaction {
                 feastDAO.getAllFeasts().groupBy {
                     it.city
@@ -27,6 +30,7 @@ data class HomeTemplate(val dao: DAOInstances) : Template<FlowContent> {
                                     href = "${it.id.value}"
                                     +it.name
                                 }
+                                br
                             }
                         }
                     }

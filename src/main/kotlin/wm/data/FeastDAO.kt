@@ -6,14 +6,18 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import wm.models.*
 
 class FeastDAO(private val cityDAO: CityDAO, private val townDAO: TownDAO) {
+    var searchResult = mutableListOf<Feast?>()
 
-    fun searchFeast(name: String): MutableList<String> {
+    fun searchFeast(name: String): MutableList<Feast> {
+        searchResult.removeAll { true }
         val regex = Regex(".*$name.*")
-        val resultList = mutableListOf<String>()
+        val resultList = mutableListOf<Feast>()
         transaction {
             getAllFeasts().forEach {
-                if (regex.find(it.name)?.value != null)
-                    resultList.add(regex.find(it.name)!!.value)
+                println(regex in it.name)
+                println("$regex ${it.name}")
+                if (regex in it.name || regex in it.city.name || regex in it.town.name)
+                    resultList.add(it)
             }
         }
         return resultList

@@ -23,6 +23,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.apache.commons:commons-email:1.5")
     implementation("org.postgresql:postgresql:42.5.0")
     implementation("org.jetbrains.exposed", "exposed-core", "0.40.1")
     implementation("org.jetbrains.exposed", "exposed-dao", "0.40.1")

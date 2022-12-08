@@ -1,5 +1,6 @@
 body {
-    background-image: url("/static/loginbackground.png");
+    /*background-image: url("/static/loginbackground.png");*/
+    background-color: #68ccd9;
     height: 95vh;
 }
 div.login {

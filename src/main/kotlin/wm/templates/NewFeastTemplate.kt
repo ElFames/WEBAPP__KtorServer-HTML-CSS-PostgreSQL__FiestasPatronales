@@ -8,6 +8,7 @@ import wm.data.DAOInstances
 class NewFeastTemplate(dao: DAOInstances) : Template<FlowContent> {
     private val cityDAO = dao.cityDAO
     private val townDAO = dao.townDAO
+
     override fun FlowContent.apply() {
         div("mainbox") {
             h2 {
@@ -60,6 +61,7 @@ class NewFeastTemplate(dao: DAOInstances) : Template<FlowContent> {
                     select {
                         name = "town"
                         required = true
+
                         transaction {
                             townDAO.getAllTowns().forEachIndexed { i, town ->
                                 option {
