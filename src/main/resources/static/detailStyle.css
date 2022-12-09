@@ -1,0 +1,13 @@
+.detailinfo {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-around;
+}
+img.feastImg {
+    height: 460px;
+    border: 8px solid rgb(43, 202, 218);
+}
+h3 {
+    margin-top: 45px;
+    color: rgb(43, 202, 218);
+}

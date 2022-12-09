@@ -1,5 +1,6 @@
 package wm.routes
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.request.*
@@ -7,16 +8,12 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.html.body
 import kotlinx.html.h1
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import wm.data.DAOInstances
 import wm.functions.multipartDataToFeast
-import wm.models.Comment
 import wm.models.User
 import wm.storage.CommentsStorage
 import wm.templates.*
-import java.nio.file.Path
-import kotlin.io.path.writeText
+import java.io.File
 
 fun Route.fiestasPatronalesRouting() {
     val commentstorage = CommentsStorage()
@@ -38,14 +35,24 @@ fun Route.fiestasPatronalesRouting() {
             call.respondHtmlTemplate(LoginTemplate()) {}
         }
 
+        get("/images/{imageName}") {
+            val imageName = call.parameters["imageName"]
+            if(File("./images/$imageName").exists())
+                call.respondFile(File("./images/$imageName"))
+            else
+                call.respondText("Image not found", status = HttpStatusCode.NotFound)
+        }
+
         post("checkLogin") {
+            // el receiveParameters() se queda pillado sin dar error...
+            // hemos hecho una funcion que hace lo mismo a raiz del receiveText()
             val textForm = call.receiveText()
             val params = getParams(textForm)
             val nickname = params["nickname"]
             val password = params["password"]
 
-            if (userDAO.checkUser(nickname, password)) {
-                currentUser = userDAO.getUser(nickname, password)
+            if (userDAO.checkUser(nickname,password)) {
+                currentUser = userDAO.getUser(nickname,password)
                 call.respondRedirect("home")
             } else {
                 call.respondHtml {
@@ -107,12 +114,6 @@ fun Route.fiestasPatronalesRouting() {
             if (currentUser==null) call.respondRedirect("login")
             call.respondHtmlTemplate(LayoutTemplate(dao)) {
                 this.content = "newFeast"
-            }
-        }
-        get("nextRoute") {
-            if (currentUser==null) call.respondRedirect("login")
-            call.respondHtmlTemplate(LayoutTemplate(dao)) {
-                this.content = "nextRoute"
             }
         }
         get("contact") {

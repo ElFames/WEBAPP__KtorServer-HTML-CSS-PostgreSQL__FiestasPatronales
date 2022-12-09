@@ -16,6 +16,7 @@ class LayoutTemplate(private val dao: DAOInstances) : Template<HTML> {
             link(rel = "stylesheet", href = "/static/newFeastStyle.css", type = "text/css")
             link(rel = "stylesheet", href = "/static/contactStyle.css", type = "text/css")
             link(rel = "stylesheet", href = "/static/searcherStyle.css", type = "text/css")
+            link(rel = "stylesheet", href = "/static/detailStyle.css", type = "text/css")
         }
         body {
             header {
@@ -37,12 +38,6 @@ class LayoutTemplate(private val dao: DAOInstances) : Template<HTML> {
                             a {
                                 href = "/fiestaspatronales/searcher"
                                 +"BUSCADOR | "
-                            }
-                        }
-                        li{
-                            a {
-                                href = "/fiestaspatronales/nextRoute"
-                                +"RUTAS | "
                             }
                         }
                         li{
@@ -77,7 +72,6 @@ class LayoutTemplate(private val dao: DAOInstances) : Template<HTML> {
                     when (content) {
                         "home" -> this.insert(HomeTemplate(dao), TemplatePlaceholder())
                         "searcher" -> this.insert(SearcherTemplate(dao), TemplatePlaceholder())
-                        "nextRoute" -> this.insert(NextRouteTemplate(dao), TemplatePlaceholder())
                         "contact" -> this.insert(ContactTemplate(), TemplatePlaceholder())
                         "api" -> this.insert(ApiTemplate(), TemplatePlaceholder())
                         "newFeast" -> this.insert(NewFeastTemplate(dao), TemplatePlaceholder())
