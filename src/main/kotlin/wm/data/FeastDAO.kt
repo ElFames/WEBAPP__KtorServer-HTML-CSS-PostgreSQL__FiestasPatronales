@@ -14,8 +14,6 @@ class FeastDAO(private val cityDAO: CityDAO, private val townDAO: TownDAO) {
         val resultList = mutableListOf<Feast>()
         transaction {
             getAllFeasts().forEach {
-                println(regex in it.name.lowercase())
-                println("$regex ${it.name.lowercase()}")
                 if (regex in it.name.lowercase() || regex in it.city.name.lowercase() || regex in it.town.name.lowercase())
                     resultList.add(it)
             }
@@ -52,5 +50,9 @@ class FeastDAO(private val cityDAO: CityDAO, private val townDAO: TownDAO) {
         return transaction {
             Feast.find { Feasts.name eq feastName }.firstOrNull()
         }
+    }
+
+    fun getAllData(): MutableList<SizedIterable<Any>?> {
+        return mutableListOf(getAllFeasts(),cityDAO.getAllCitys(),townDAO.getAllTowns())
     }
 }

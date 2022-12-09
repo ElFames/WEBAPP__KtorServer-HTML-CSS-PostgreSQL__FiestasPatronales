@@ -2,6 +2,7 @@ package wm.routes
 
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.html.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -17,6 +18,8 @@ import java.io.File
 
 fun Route.fiestasPatronalesRouting() {
     val dao = DAOInstances()
+    val townDAO = dao.townDAO
+    val cityDAO = dao.cityDAO
     val feastDAO = dao.feastDAO
     val userDAO = dao.userDAO
     var currentUser: User? = null
@@ -32,10 +35,49 @@ fun Route.fiestasPatronalesRouting() {
         get("/") {
             call.respondRedirect("home")
         }
+
+        /**
+         * Json Responds:
+         */
+        route("/api") {
+            get ("all") {
+                if (feastDAO.getAllData().isEmpty())
+                    call.respondText("No feast found", status = HttpStatusCode.NoContent)
+                else call.respond(feastDAO.getAllData())
+            }
+            get ("feasts") {
+                if (feastDAO.getAllFeasts().empty())
+                    call.respondText("No feast found", status = HttpStatusCode.NotFound)
+                else call.respond(feastDAO.getAllFeasts())
+            }
+            get ("citys") {
+                if (cityDAO.getAllCitys().empty())
+                    call.respondText("No city found", status = HttpStatusCode.NotFound)
+                else call.respond(cityDAO.getAllCitys())
+            }
+            get ("towns") {
+                if (townDAO.getAllTowns().empty())
+                    call.respondText("No town found", status = HttpStatusCode.NotFound)
+                else call.respond(townDAO.getAllTowns())
+            }
+            get ("{id?}") {
+                val id = call.parameters["id"]
+                    ?: return@get call.respondText("Missing id", status = HttpStatusCode.BadRequest)
+                val feast = feastDAO.getFeastById(id.toInt())
+                    ?: return@get call.respondText("Feast not exist with id $id", status = HttpStatusCode.NotFound)
+                call.respond(feast)
+            }
+            put("{id}/description") {
+
+            }
+        }
+
+        /**
+         * Image, Login and Form receivers
+         */
         get("login") {
             call.respondHtmlTemplate(LoginTemplate()) {}
         }
-
         get("/images/{imageName}") {
             val imageName = call.parameters["imageName"]
             if(File("./images/$imageName").exists())
@@ -43,35 +85,28 @@ fun Route.fiestasPatronalesRouting() {
             else
                 call.respondText("Image not found", status = HttpStatusCode.NotFound)
         }
-
         post("checkLogin") {
             // el receiveParameters() se queda pillado sin dar error...
             // hemos hecho una funcion que hace lo mismo a raiz del receiveText()
             val params = getParams(call.receiveText())
-            val nickname = params["nickname"]
-            val password = params["password"]
-
-            if (userDAO.checkUser(nickname,password)) {
-                currentUser = userDAO.getUser(nickname,password)
+            if (userDAO.checkUser(params["nickname"],params["password"])) {
+                currentUser = userDAO.getUser(params["nickname"],params["password"])
                 call.respondRedirect("home")
             } else {
                 call.respondHtml {
-                    body { h1 { +"Nombre y/o contraseña incorrecta para el usuario: $nickname..." } }
+                    body { h1 { +"Nombre y/o contraseña incorrecta para el usuario: ${params["nickname"]}..." } }
                 }
             }
         }
         post("newUser") {
             val params = getParams(call.receiveText())
-            val nickname = params["nickname"]!!
-            val password = params["passwor"]!!
-
-            if (userDAO.checkUser(nickname, password)) {
+            if (userDAO.checkUser(params["nickname"]!!,params["passwor"]!!)) {
                 call.respondHtml {
-                    body { h1 { + "El usuario: $nickname ya esta registrado..." } }
+                    body { h1 { + "El usuario: ${params["nickname"]}!! ya esta registrado..." } }
                 }
             } else {
-                userDAO.newUser(nickname, password)
-                currentUser = userDAO.getUser(nickname, password)
+                userDAO.newUser(params["nickname"]!!,params["passwor"]!!)
+                currentUser = userDAO.getUser(params["nickname"]!!,params["passwor"]!!)
                 call.respondRedirect("home")
             }
         }
@@ -93,7 +128,9 @@ fun Route.fiestasPatronalesRouting() {
             call.respondRedirect("searcher")
         }
 
-        // Insert Templates:
+        /**
+         * Insert Templates:
+         */
         get("{id}") {
             if (currentUser==null) call.respondRedirect("login")
             val id = call.parameters["id"]
