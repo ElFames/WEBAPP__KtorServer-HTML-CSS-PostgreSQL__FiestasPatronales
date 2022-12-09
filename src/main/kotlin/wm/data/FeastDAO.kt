@@ -10,13 +10,13 @@ class FeastDAO(private val cityDAO: CityDAO, private val townDAO: TownDAO) {
 
     fun searchFeast(name: String): MutableList<Feast> {
         searchResult.removeAll { true }
-        val regex = Regex(".*$name.*")
+        val regex = Regex(".*${name.lowercase()}.*")
         val resultList = mutableListOf<Feast>()
         transaction {
             getAllFeasts().forEach {
-                println(regex in it.name)
-                println("$regex ${it.name}")
-                if (regex in it.name || regex in it.city.name || regex in it.town.name)
+                println(regex in it.name.lowercase())
+                println("$regex ${it.name.lowercase()}")
+                if (regex in it.name.lowercase() || regex in it.city.name.lowercase() || regex in it.town.name.lowercase())
                     resultList.add(it)
             }
         }
@@ -48,7 +48,7 @@ class FeastDAO(private val cityDAO: CityDAO, private val townDAO: TownDAO) {
         }
     }
 
-    fun getFeast(feastName: String): Feast? {
+    fun getFeastByName(feastName: String): Feast? {
         return transaction {
             Feast.find { Feasts.name eq feastName }.firstOrNull()
         }

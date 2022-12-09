@@ -16,12 +16,13 @@ import wm.templates.*
 import java.io.File
 
 fun Route.fiestasPatronalesRouting() {
-    val commentstorage = CommentsStorage()
-    commentstorage.loadComments()
     val dao = DAOInstances()
     val feastDAO = dao.feastDAO
     val userDAO = dao.userDAO
-    var currentUser: User? = userDAO.getUser("admin","admin")
+    var currentUser: User? = null
+    val commentstorage = CommentsStorage()
+    commentstorage.loadComments()
+    var search: String? = null
 
     route("/fiestaspatronales") {
 
@@ -46,8 +47,7 @@ fun Route.fiestasPatronalesRouting() {
         post("checkLogin") {
             // el receiveParameters() se queda pillado sin dar error...
             // hemos hecho una funcion que hace lo mismo a raiz del receiveText()
-            val textForm = call.receiveText()
-            val params = getParams(textForm)
+            val params = getParams(call.receiveText())
             val nickname = params["nickname"]
             val password = params["password"]
 
@@ -64,7 +64,6 @@ fun Route.fiestasPatronalesRouting() {
             val params = getParams(call.receiveText())
             val nickname = params["nickname"]!!
             val password = params["passwor"]!!
-
 
             if (userDAO.checkUser(nickname, password)) {
                 call.respondHtml {
@@ -88,6 +87,11 @@ fun Route.fiestasPatronalesRouting() {
             commentstorage.saveComment(email, text)
             call.respondRedirect("home")
         }
+        post("findSearch") {
+            val params = getParams(call.receiveText())
+            search = params["search"]
+            call.respondRedirect("searcher")
+        }
 
         // Insert Templates:
         get("{id}") {
@@ -108,6 +112,8 @@ fun Route.fiestasPatronalesRouting() {
             if (currentUser==null) call.respondRedirect("login")
             call.respondHtmlTemplate(LayoutTemplate(dao)) {
                 this.content = "searcher"
+                println(search)
+                this.search = search
             }
         }
         get("newFeast") {

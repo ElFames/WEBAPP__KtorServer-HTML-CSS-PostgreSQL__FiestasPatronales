@@ -7,6 +7,7 @@ import wm.data.DAOInstances
 class LayoutTemplate(private val dao: DAOInstances) : Template<HTML> {
     lateinit var content: String
     lateinit var tableId: String
+    var search: String? = null
 
     override fun HTML.apply() {
         head {
@@ -71,7 +72,7 @@ class LayoutTemplate(private val dao: DAOInstances) : Template<HTML> {
                 div ("maincontent"){
                     when (content) {
                         "home" -> this.insert(HomeTemplate(dao), TemplatePlaceholder())
-                        "searcher" -> this.insert(SearcherTemplate(dao), TemplatePlaceholder())
+                        "searcher" -> this.insert(SearcherTemplate(dao, search), TemplatePlaceholder())
                         "contact" -> this.insert(ContactTemplate(), TemplatePlaceholder())
                         "api" -> this.insert(ApiTemplate(), TemplatePlaceholder())
                         "newFeast" -> this.insert(NewFeastTemplate(dao), TemplatePlaceholder())

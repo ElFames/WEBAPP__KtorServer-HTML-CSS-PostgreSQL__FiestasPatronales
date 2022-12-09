@@ -5,7 +5,7 @@ import kotlinx.html.*
 import wm.data.DAOInstances
 import wm.models.Feast
 
-data class SearcherTemplate(val dao: DAOInstances) : Template<FlowContent> {
+data class SearcherTemplate(val dao: DAOInstances, val search: String?) : Template<FlowContent> {
     private val feastDAO = dao.feastDAO
     private var searchResult: MutableList<Feast> = mutableListOf()
     override fun FlowContent.apply() {
@@ -14,13 +14,21 @@ data class SearcherTemplate(val dao: DAOInstances) : Template<FlowContent> {
             h2 {
                 +"Encuentra tu fiesta"
             }
-            searchInput {
-                id = "searcher"
-                name = "search"
-                value = ""
-                placeholder = "Busca una fiesta"
-                onChange = "${searchHandler(value)}"
-                onSubmit = "${searchHandler(value)}"
+            postForm {
+                action = "/fiestaspatronales/findSearch"
+                encType = FormEncType.textPlain
+
+                searchInput {
+                    id = "searcher"
+                    name = "search"
+                    value = search?:""
+                    placeholder = "Busca una fiesta"
+                    onChange = "${searchHandler(value)}"
+                }
+                submitInput(classes="button") {
+                    value = "Buscar"
+                    attributes["aria-selected"] = "true"
+                }
             }
             this.insert(SearchResultTemplate(searchResult), TemplatePlaceholder())
         }

@@ -4,7 +4,7 @@ import io.ktor.server.html.*
 import kotlinx.html.*
 import wm.models.Feast
 
-class SearchResultTemplate(private val searchResult: MutableList<Feast>) : Template<FlowContent> {
+class SearchResultTemplate(private var searchResult: MutableList<Feast>) : Template<FlowContent> {
     override fun FlowContent.apply() {
         div("search-results") {
             id = "results"
@@ -13,7 +13,7 @@ class SearchResultTemplate(private val searchResult: MutableList<Feast>) : Templ
                     div {
                         id = "result-$index"
                         p {
-                            a(classes="enlace"){
+                            a(classes="feast"){
                                 href = "${feast.id}"
                                 +feast.name
                             }
