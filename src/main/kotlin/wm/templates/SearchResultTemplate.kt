@@ -2,7 +2,7 @@ package wm.templates
 
 import io.ktor.server.html.*
 import kotlinx.html.*
-import wm.models.Feast
+import wm.models.feast.Feast
 
 class SearchResultTemplate(private var searchResult: MutableList<Feast>) : Template<FlowContent> {
     override fun FlowContent.apply() {

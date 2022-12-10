@@ -61,7 +61,7 @@ class LayoutTemplate(private val dao: DAOInstances) : Template<HTML> {
                         }
                         li{
                             a {
-                                href = "/api"
+                                href = "/endpoints"
                                 +"API"
                             }
                         }
@@ -74,7 +74,7 @@ class LayoutTemplate(private val dao: DAOInstances) : Template<HTML> {
                         "home" -> this.insert(HomeTemplate(dao), TemplatePlaceholder())
                         "searcher" -> this.insert(SearcherTemplate(dao, search), TemplatePlaceholder())
                         "contact" -> this.insert(ContactTemplate(), TemplatePlaceholder())
-                        "api" -> this.insert(ApiTemplate(), TemplatePlaceholder())
+                        "endpoints" -> this.insert(ApiTemplate(), TemplatePlaceholder())
                         "newFeast" -> this.insert(NewFeastTemplate(dao), TemplatePlaceholder())
                         "detail" -> this.insert(DetailTemplate(dao,tableId), TemplatePlaceholder())
                     }

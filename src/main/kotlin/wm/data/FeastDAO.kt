@@ -2,7 +2,9 @@ package wm.data
 
 import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.transactions.transaction
-import wm.models.*
+import wm.models.feast.Feast
+import wm.models.feast.Feasts
+import wm.models.feast.JsonFeast
 
 class FeastDAO(private val cityDAO: CityDAO, private val townDAO: TownDAO) {
     var searchResult = mutableListOf<Feast?>()
@@ -38,7 +40,25 @@ class FeastDAO(private val cityDAO: CityDAO, private val townDAO: TownDAO) {
             Feast.all()
         }
     }
-
+    fun getJsonsFeasts(): MutableList<JsonFeast> {
+        val jsonFeastList = mutableListOf<JsonFeast>()
+        transaction {
+            getAllFeasts().forEach {
+                jsonFeastList.add(
+                    JsonFeast(
+                        it.id.value,
+                        it.name,
+                        it.dates,
+                        it.description,
+                        cityDAO.getJsonCity(it.city),
+                        townDAO.getJsonTown(it.town),
+                        it.image,it.likes.toString()
+                    )
+                )
+            }
+        }
+        return jsonFeastList
+    }
     fun getFeastById(feastId: Int?): Feast? {
         return transaction {
             Feast.find { Feasts.id eq feastId }.firstOrNull()
@@ -51,7 +71,19 @@ class FeastDAO(private val cityDAO: CityDAO, private val townDAO: TownDAO) {
         }
     }
 
-    fun getAllData(): MutableList<SizedIterable<Any>?> {
-        return mutableListOf(getAllFeasts(),cityDAO.getAllCitys(),townDAO.getAllTowns())
+    fun getJsonFeast(id: Int): JsonFeast {
+        val feast = getFeastById(id)!!
+        return transaction {
+            JsonFeast(
+                feast.id.value,
+                feast.name,
+                feast.dates,
+                feast.description,
+                cityDAO.getJsonCity(feast.city),
+                townDAO.getJsonTown(feast.town),
+                feast.image,
+                feast.likes.toString()
+            )
+        }
     }
 }

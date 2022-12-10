@@ -1,13 +1,10 @@
 package wm.data
 
 import org.jetbrains.exposed.sql.SizedIterable
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
-import wm.models.City
-import wm.models.Citys
-import wm.models.Town
-import wm.models.Towns
-import java.lang.Exception
+import wm.models.town.JsonTown
+import wm.models.town.Town
+import wm.models.town.Towns
 
 class TownDAO(private val cityDAO: CityDAO) {
 
@@ -42,5 +39,28 @@ class TownDAO(private val cityDAO: CityDAO) {
         return transaction {
             Town.find { Towns.id eq townId }.firstOrNull()
         }
+    }
+
+    fun getJsonTown(town: Town): JsonTown {
+        return transaction {
+            JsonTown(town.id.value,town.name,cityDAO.getJsonCity(town.city))
+        }
+
+    }
+
+    fun getJsonsTowns(): MutableList<JsonTown> {
+        val jsonTownList = mutableListOf<JsonTown>()
+        transaction {
+            getAllTowns().forEach {
+                jsonTownList.add(
+                    JsonTown(
+                        it.id.value,
+                        it.name,
+                        cityDAO.getJsonCity(it.city)
+                    )
+                )
+            }
+        }
+        return jsonTownList
     }
 }

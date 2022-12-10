@@ -11,13 +11,23 @@ class ApiTemplate: Template<FlowContent> {
                 +"Consigue datos en json"
             }
             p { +"Esto es una mini introduccion para que te pongas a leer un rato, no hay secreto aqui el codigo es libre siempre y cuando pagues pero es gratis si no es dinero lo que pagas."}
-            p { +"GET /api/all" }
-            p { +"GET /api/feasts" }
-            p { +"GET /api/citys" }
-            p { +"GET /api/towns" }
-            p { +"GET /api/{id}" }
-            p { +"PUT /api/{id}/description" }
-            p { +"GET Para iniciar sesion ves al directorio raiz '/'. Para recibir unas credenciales dejanos un comentario y te llegará un correo con las claves. Gracias." }
+
+            a("/api/feasts") {
+                p { +"GET /api/feasts"}
+            }
+            a("/api/citys") {
+                p { +"GET /api/citys"}
+            }
+            a("/api/towns") {
+                p {+"GET /api/towns"}
+            }
+            a("/api/1") {
+                p {+"GET /api/1" }
+            }
+            p {
+                +"PUT /api/{id}/description"
+            }
+            p { +"Las credenciales de la api seran las mismas que las del usuario de la web" }
         }
     }
 }

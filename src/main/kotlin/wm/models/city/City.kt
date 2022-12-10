@@ -1,4 +1,4 @@
-package wm.models
+package wm.models.city
 
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass

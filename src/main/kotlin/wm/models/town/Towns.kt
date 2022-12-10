@@ -1,6 +1,7 @@
-package wm.models
+package wm.models.town
 
 import org.jetbrains.exposed.dao.id.IntIdTable
+import wm.models.city.Citys
 
 object Towns: IntIdTable() {
     val name = varchar("name",50).uniqueIndex()

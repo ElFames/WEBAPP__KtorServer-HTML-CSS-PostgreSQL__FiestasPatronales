@@ -1,8 +1,10 @@
-package wm.models
+package wm.models.feast
 
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
+import wm.models.city.City
+import wm.models.town.Town
 
 class Feast(id: EntityID<Int>): IntEntity(id) {
     companion object : IntEntityClass<Feast>(Feasts)

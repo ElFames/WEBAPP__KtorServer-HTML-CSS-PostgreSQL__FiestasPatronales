@@ -1,4 +1,4 @@
-package wm.models
+package wm.models.user
 
 import org.jetbrains.exposed.dao.id.IntIdTable
 

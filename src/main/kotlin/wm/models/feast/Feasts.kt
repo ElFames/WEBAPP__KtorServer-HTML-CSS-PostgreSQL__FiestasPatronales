@@ -1,6 +1,8 @@
-package wm.models
+package wm.models.feast
 
 import org.jetbrains.exposed.dao.id.IntIdTable
+import wm.models.city.Citys
+import wm.models.town.Towns
 
 object Feasts: IntIdTable() {
     val name = varchar("name",50).uniqueIndex()

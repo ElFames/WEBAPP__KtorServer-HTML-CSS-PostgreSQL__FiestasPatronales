@@ -3,7 +3,7 @@ package wm.templates
 import io.ktor.server.html.*
 import kotlinx.html.*
 import wm.data.DAOInstances
-import wm.models.Feast
+import wm.models.feast.Feast
 
 data class SearcherTemplate(val dao: DAOInstances, val search: String?) : Template<FlowContent> {
     private val feastDAO = dao.feastDAO

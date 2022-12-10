@@ -2,6 +2,7 @@ package wm.routes
 
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.html.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -10,17 +11,15 @@ import kotlinx.html.body
 import kotlinx.html.h1
 import wm.data.DAOInstances
 import wm.functions.multipartDataToFeast
-import wm.models.User
-import wm.storage.CommentsStorage
+import wm.models.user.User
 import wm.templates.*
 import java.io.File
 
 fun Route.webRouting(dao: DAOInstances) {
     val feastDAO = dao.feastDAO
     val userDAO = dao.userDAO
+    val commentstorage = dao.commentstorage
     var currentUser: User? = null
-    val commentstorage = CommentsStorage()
-    commentstorage.loadComments()
     var search: String? = null
 
     route("") {
@@ -56,13 +55,14 @@ fun Route.webRouting(dao: DAOInstances) {
         }
         post("newUser") {
             val params = getParams(call.receiveText())
-            if (userDAO.checkUser(params["nickname"]!!,params["passwor"]!!)) {
+            if (userDAO.checkUser(params["nickname"]!!,params["password"]!!)) {
                 call.respondHtml {
                     body { h1 { + "El usuario: ${params["nickname"]}!! ya esta registrado..." } }
                 }
             } else {
-                userDAO.newUser(params["nickname"]!!,params["passwor"]!!)
-                currentUser = userDAO.getUser(params["nickname"]!!,params["passwor"]!!)
+                userDAO.newUser(params["nickname"]!!,params["password"]!!)
+                userDAO.usersForApi.add(UserPasswordCredential(params["nickname"]!!,params["password"]!!))
+                currentUser = userDAO.getUser(params["nickname"]!!,params["password"]!!)
                 call.respondRedirect("home")
             }
         }
@@ -75,7 +75,7 @@ fun Route.webRouting(dao: DAOInstances) {
             val params = getParams(call.receiveText())
             val email = params["email"]?:"Anonimo"
             val text = params["comment"]!!
-            commentstorage.saveComment(email, text)
+            commentstorage.saveComment(currentUser!!.nickname,email, text)
             call.respondRedirect("home")
         }
         post("findSearch") {
@@ -121,10 +121,10 @@ fun Route.webRouting(dao: DAOInstances) {
                 this.content = "contact"
             }
         }
-        get("api") {
+        get("endpoints") {
             if (currentUser==null) call.respondRedirect("login")
             call.respondHtmlTemplate(LayoutTemplate(dao)) {
-                this.content = "api"
+                this.content = "endpoints"
             }
         }
     }

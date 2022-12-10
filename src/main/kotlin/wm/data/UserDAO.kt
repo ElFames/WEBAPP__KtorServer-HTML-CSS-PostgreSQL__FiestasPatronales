@@ -1,13 +1,12 @@
 package wm.data
 
 import io.ktor.server.auth.*
-import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
-import wm.models.User
-import wm.models.Users
+import wm.models.user.User
+import wm.models.user.Users
 class UserDAO {
-    val usersForApi = mutableListOf(UserPasswordCredential("admin","admin"))
+    val usersForApi = getAllUsers()
     fun checkUser(nickname: String?, password: String?): Boolean {
         return transaction {
             User.find { Users.nickname eq "$nickname" and (Users.password eq "$password") }.firstOrNull()
@@ -26,10 +25,14 @@ class UserDAO {
             }
         }
     }
-    fun getAllUsers() {
+    private fun getAllUsers(): MutableList<UserPasswordCredential> {
+        val resultList = mutableListOf<UserPasswordCredential>()
         transaction {
-            User.all()
+            User.all().forEach {
+                resultList.add(UserPasswordCredential(it.nickname,it.password))
+            }
         }
+        return resultList
     }
     fun deleteUser(nickname: String, password: String) {
         transaction {
