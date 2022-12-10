@@ -21,11 +21,10 @@ fun Application.configureRouting(dao: DAOInstances) {
     }
     routing {
         webRouting(dao)
+        jsonsRouting(dao)
+
         static("/static") {
             resources("static")
-        }
-        authenticate("auth-basic") {
-            jsonsRouting(dao)
         }
     }
 }

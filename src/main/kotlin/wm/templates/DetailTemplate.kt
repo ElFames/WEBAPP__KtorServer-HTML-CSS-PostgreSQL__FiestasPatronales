@@ -41,9 +41,9 @@ class DetailTemplate(val dao: DAOInstances, tableId: String) : Template<FlowCont
                         h3 {
                             +"Aqui tienes la ubicación de la zona más proxima"
                         }
-                        val location = feast.town.location?:feast.city.location?:""
+                        val location = feast.town.location?:feast.city.location?:dao.defaultLocation
                         iframe {
-                            src = dao.urlMaps+location
+                            src = "${dao.urlMaps}$location"
                             width = "700"
                             height = "450"
                             style = "border:0;"

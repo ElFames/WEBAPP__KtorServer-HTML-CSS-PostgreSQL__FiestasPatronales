@@ -21,7 +21,7 @@ class LayoutTemplate(private val dao: DAOInstances) : Template<HTML> {
         }
         body {
             header {
-                a("/fiestaspatronales") {
+                a("/") {
                     img(classes="logo") {
                         src = "/static/logo.png"
                         alt = "logo"
@@ -31,37 +31,37 @@ class LayoutTemplate(private val dao: DAOInstances) : Template<HTML> {
                     ul("menu") {
                         li {
                             a {
-                                href = "/fiestaspatronales/home"
+                                href = "/home"
                                 +"INICIO | "
                             }
                         }
                         li{
                             a {
-                                href = "/fiestaspatronales/searcher"
+                                href = "/searcher"
                                 +"BUSCADOR | "
                             }
                         }
                         li{
                             a {
-                                href = "/fiestaspatronales/contact"
+                                href = "/contact"
                                 +"CONTACTO | "
                             }
                         }
                         li{
                             a {
-                                href = "/fiestaspatronales/newFeast"
+                                href = "/newFeast"
                                 +"APORTAR | "
                             }
                         }
                         li{
                             a {
-                                href = "/fiestaspatronales/login"
+                                href = "/login"
                                 +"UNLOGIN | "
                             }
                         }
                         li{
                             a {
-                                href = "/fiestaspatronales/api"
+                                href = "/api"
                                 +"API"
                             }
                         }

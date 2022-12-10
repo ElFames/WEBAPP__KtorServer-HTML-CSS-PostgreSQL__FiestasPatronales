@@ -23,18 +23,14 @@ fun Route.webRouting(dao: DAOInstances) {
     commentstorage.loadComments()
     var search: String? = null
 
-    route("/fiestaspatronales") {
-
+    route("") {
         get {
-            call.respondRedirect("fiestaspatronales/home")
+            call.respondRedirect("home")
         }
         get("/") {
             call.respondRedirect("home")
         }
 
-        /**
-         * Image, Login and Form receivers
-         */
         get("login") {
             call.respondHtmlTemplate(LoginTemplate()) {}
         }

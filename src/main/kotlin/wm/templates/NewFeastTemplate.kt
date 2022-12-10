@@ -16,7 +16,7 @@ class NewFeastTemplate(dao: DAOInstances) : Template<FlowContent> {
             }
             div {
                 postForm {
-                    action = "/fiestaspatronales/addFeast"
+                    action = "/addFeast"
                     encType = FormEncType.multipartFormData
                     input {
                         name = "name"

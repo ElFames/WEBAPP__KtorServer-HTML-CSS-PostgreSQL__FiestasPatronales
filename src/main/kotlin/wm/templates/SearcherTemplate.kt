@@ -15,7 +15,7 @@ data class SearcherTemplate(val dao: DAOInstances, val search: String?) : Templa
                 +"Encuentra tu fiesta"
             }
             postForm {
-                action = "/fiestaspatronales/findSearch"
+                action = "/findSearch"
                 encType = FormEncType.textPlain
 
                 searchInput {

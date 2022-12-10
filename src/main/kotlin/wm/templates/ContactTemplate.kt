@@ -24,7 +24,7 @@ class ContactTemplate: Template<FlowContent> {
                 +"Dejanos tu correo y tu comentario, duda o sugerencia"
             }
             postForm {
-                action = "/fiestaspatronales/comentario"
+                action = "/comentario"
                 encType = FormEncType.textPlain
 
                 input {

@@ -20,7 +20,7 @@ class LoginTemplate: Template<HTML> {
                         alt = "logo"
                     }
                     form {
-                        action = "/fiestaspatronales/checkLogin"
+                        action = "/checkLogin"
                         encType = FormEncType.textPlain
                         method = FormMethod.post
 
@@ -47,7 +47,7 @@ class LoginTemplate: Template<HTML> {
                             attributes["aria-selected"] = "true"
                         }
                         input(classes = "button"){
-                            formAction = "/fiestaspatronales/newUser"
+                            formAction = "/newUser"
                             type = InputType.submit
                             value = "Registrar"
                             attributes["aria-selected"] = "true"
