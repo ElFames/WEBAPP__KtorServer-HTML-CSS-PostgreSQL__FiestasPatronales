@@ -5,17 +5,27 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.transactions.transactionScope
 import wm.data.DAOInstances
 
 fun Route.jsonsRouting(dao: DAOInstances) {
+    route("") {
+        get {
+            call.respondRedirect("/api/")
+        }
+    }
     route("/api") {
+        get {
+            call.respondText("Hello, ${call.principal<UserIdPrincipal>()?.name}!")
+        }
         get("/") {
             call.respondText("Hello, ${call.principal<UserIdPrincipal>()?.name}!")
         }
-        get ("/all") {
+        get ("all") {
             if (dao.feastDAO.getAllData().isEmpty())
                 call.respondText("No feast found", status = HttpStatusCode.NoContent)
-            else call.respond(dao.feastDAO.getAllData())
+            else call.respondText("${call.respond(dao.feastDAO.getAllData())}")
         }
         get ("/feasts") {
             if (dao.feastDAO.getAllFeasts().empty())

@@ -8,8 +8,7 @@ import wm.data.DAOInstances
 import wm.routes.jsonsRouting
 import wm.routes.webRouting
 
-fun Application.configureRouting() {
-    val dao = DAOInstances()
+fun Application.configureRouting(dao: DAOInstances) {
     install(Authentication) {
         basic("auth-basic") {
             realm = "Access to the '/' path"
