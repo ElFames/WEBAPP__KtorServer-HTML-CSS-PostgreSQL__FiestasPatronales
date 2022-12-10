@@ -1,7 +1,6 @@
 package wm.data
 
 import org.jetbrains.exposed.sql.SizedIterable
-import org.jetbrains.exposed.sql.lowerCase
 import org.jetbrains.exposed.sql.transactions.transaction
 import wm.models.*
 

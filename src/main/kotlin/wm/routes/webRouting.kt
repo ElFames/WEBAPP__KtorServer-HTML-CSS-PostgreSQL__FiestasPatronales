@@ -2,7 +2,6 @@ package wm.routes
 
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.html.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -16,10 +15,7 @@ import wm.storage.CommentsStorage
 import wm.templates.*
 import java.io.File
 
-fun Route.fiestasPatronalesRouting() {
-    val dao = DAOInstances()
-    val townDAO = dao.townDAO
-    val cityDAO = dao.cityDAO
+fun Route.webRouting(dao: DAOInstances) {
     val feastDAO = dao.feastDAO
     val userDAO = dao.userDAO
     var currentUser: User? = null
@@ -34,42 +30,6 @@ fun Route.fiestasPatronalesRouting() {
         }
         get("/") {
             call.respondRedirect("home")
-        }
-
-        /**
-         * Json Responds:
-         */
-        route("/api") {
-            get ("all") {
-                if (feastDAO.getAllData().isEmpty())
-                    call.respondText("No feast found", status = HttpStatusCode.NoContent)
-                else call.respond(feastDAO.getAllData())
-            }
-            get ("feasts") {
-                if (feastDAO.getAllFeasts().empty())
-                    call.respondText("No feast found", status = HttpStatusCode.NotFound)
-                else call.respond(feastDAO.getAllFeasts())
-            }
-            get ("citys") {
-                if (cityDAO.getAllCitys().empty())
-                    call.respondText("No city found", status = HttpStatusCode.NotFound)
-                else call.respond(cityDAO.getAllCitys())
-            }
-            get ("towns") {
-                if (townDAO.getAllTowns().empty())
-                    call.respondText("No town found", status = HttpStatusCode.NotFound)
-                else call.respond(townDAO.getAllTowns())
-            }
-            get ("{id?}") {
-                val id = call.parameters["id"]
-                    ?: return@get call.respondText("Missing id", status = HttpStatusCode.BadRequest)
-                val feast = feastDAO.getFeastById(id.toInt())
-                    ?: return@get call.respondText("Feast not exist with id $id", status = HttpStatusCode.NotFound)
-                call.respond(feast)
-            }
-            put("{id}/description") {
-
-            }
         }
 
         /**

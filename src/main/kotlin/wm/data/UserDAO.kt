@@ -1,11 +1,13 @@
 package wm.data
 
+import io.ktor.server.auth.*
+import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import wm.models.User
 import wm.models.Users
-
 class UserDAO {
+    val usersForApi = mutableListOf(UserPasswordCredential("admin","admin"))
     fun checkUser(nickname: String?, password: String?): Boolean {
         return transaction {
             User.find { Users.nickname eq "$nickname" and (Users.password eq "$password") }.firstOrNull()

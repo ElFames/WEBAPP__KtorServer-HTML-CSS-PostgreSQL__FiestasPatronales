@@ -4,29 +4,29 @@ import io.ktor.server.routing.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.http.content.*
-import io.ktor.server.response.*
-import wm.routes.fiestasPatronalesRouting
+import wm.data.DAOInstances
+import wm.routes.jsonsRouting
+import wm.routes.webRouting
 
 fun Application.configureRouting() {
-    val users = mutableListOf(
-        UserPasswordCredential("admin","admin")
-    )
+    val dao = DAOInstances()
     install(Authentication) {
         basic("auth-basic") {
             realm = "Access to the '/' path"
             validate { credentials ->
-                if (credentials in users)
+                if (credentials in dao.userDAO.usersForApi)
                     UserIdPrincipal(credentials.name)
                 else null
             }
         }
     }
     routing {
+        webRouting(dao)
+        static("/static") {
+            resources("static")
+        }
         authenticate("auth-basic") {
-            fiestasPatronalesRouting()
-            static("/static") {
-                resources("static")
-            }
+            jsonsRouting(dao)
         }
     }
 }
