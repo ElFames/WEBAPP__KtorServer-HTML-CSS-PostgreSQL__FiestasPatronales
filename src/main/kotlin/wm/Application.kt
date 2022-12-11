@@ -9,7 +9,7 @@ import wm.plugins.*
 
 fun main() {
     DataBase.init()
-    startWebApi()
+    startApiServer()
 }
 fun Application.module() {
     val dao = DAOInstances()
@@ -17,4 +17,10 @@ fun Application.module() {
     configureSerialization(dao)
     configureRouting(dao)
 }
-fun startWebApi() = embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module).start(wait = true)
+fun startApiServer() =
+    embeddedServer(
+        factory = Netty,
+        port = 8080,
+        host = "0.0.0.0",
+        module = Application::module
+    ).start(wait = true)
