@@ -2,6 +2,7 @@ package wm.templates
 
 import kotlinx.html.*
 import org.jetbrains.exposed.sql.SizedIterable
+import org.jetbrains.exposed.sql.transactions.transaction
 import wm.models.city.City
 import wm.models.town.Town
 
@@ -21,6 +22,25 @@ fun FlowContent.newFeastTemplate(towns: SizedIterable<Town>, citys: SizedIterabl
                     required = true
                 }
                 br
+                /**
+                 * select {
+                name = "provincia"
+                id = "provincia"
+                option {
+                value = "static/newFeast.js/cargarProvincias();"
+                +"""Seleccione una Provincia..."""
+                }
+                }
+                select {
+                name = "pueblo"
+                id = "pueblo"
+                option {
+                value = "cargarPueblos();"
+                +"""Seleccione un Pueblo..."""
+                }
+                }
+                 */
+
                 input {
                     name = "dates"
                     type = InputType.text
@@ -34,14 +54,17 @@ fun FlowContent.newFeastTemplate(towns: SizedIterable<Town>, citys: SizedIterabl
                     +"Select City"
                 }
                 br
+
                 select {
                     name = "city"
                     required = true
-                    citys.forEachIndexed { i, city ->
-                        option {
-                            id = "option$i"
-                            value = city.name
-                            text(city.name)
+                    transaction {
+                        citys.forEachIndexed { i, city ->
+                            option {
+                                id = "option$i"
+                                value = city.name
+                                text(city.name)
+                            }
                         }
                     }
                 }
@@ -55,17 +78,18 @@ fun FlowContent.newFeastTemplate(towns: SizedIterable<Town>, citys: SizedIterabl
                 select {
                     name = "town"
                     required = true
-
-                    towns.forEachIndexed { i, town ->
-                        option {
-                            id = "option$i"
-                            value = town.name
-                            text(town.name)
+                    transaction {
+                        towns.forEachIndexed { i, town ->
+                            option {
+                                id = "option$i"
+                                value = town.name
+                                text(town.name)
+                            }
                         }
                     }
                 }
                 br
-                input(classes="comment") {
+                input(classes = "comment") {
                     name = "description"
                     type = InputType.text
                     placeholder = "Descripcion"
@@ -83,7 +107,7 @@ fun FlowContent.newFeastTemplate(towns: SizedIterable<Town>, citys: SizedIterabl
                     required = true
                 }
                 br
-                input(classes = "button"){
+                input(classes = "button") {
                     type = InputType.submit
                     value = "APORTAR"
                     attributes["aria-selected"] = "true"

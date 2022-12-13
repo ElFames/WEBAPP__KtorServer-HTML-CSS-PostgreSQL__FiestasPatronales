@@ -6,7 +6,6 @@ import wm.data.DAOInstances
 
 class LayoutTemplate : Template<HTML> {
     val content = Placeholder<FlowContent>()
-    var search: String? = null
 
     override fun HTML.apply() {
         head {
@@ -17,6 +16,10 @@ class LayoutTemplate : Template<HTML> {
             link(rel = "stylesheet", href = "/static/contactStyle.css", type = "text/css")
             link(rel = "stylesheet", href = "/static/searcherStyle.css", type = "text/css")
             link(rel = "stylesheet", href = "/static/detailStyle.css", type = "text/css")
+            script {
+                type = "text/javascript"
+                src = "static/newFeast.js"
+            }
         }
         body {
             header {

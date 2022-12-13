@@ -11,6 +11,9 @@ header {
     border: 1px solid black;
     height: 80px;
 }
+body{
+    font-family: Bahnschrift, serif;
+}
 .logo {
     width: 270px;
     height: 50px;
