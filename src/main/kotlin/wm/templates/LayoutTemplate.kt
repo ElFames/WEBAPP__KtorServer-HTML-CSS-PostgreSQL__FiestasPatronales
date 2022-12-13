@@ -4,9 +4,8 @@ import io.ktor.server.html.*
 import kotlinx.html.*
 import wm.data.DAOInstances
 
-class LayoutTemplate(private val dao: DAOInstances) : Template<HTML> {
-    lateinit var content: String
-    lateinit var tableId: String
+class LayoutTemplate : Template<HTML> {
+    val content = Placeholder<FlowContent>()
     var search: String? = null
 
     override fun HTML.apply() {
@@ -70,14 +69,7 @@ class LayoutTemplate(private val dao: DAOInstances) : Template<HTML> {
             }
             main {
                 div ("maincontent"){
-                    when (content) {
-                        "home" -> this.insert(HomeTemplate(dao), TemplatePlaceholder())
-                        "searcher" -> this.insert(SearcherTemplate(dao, search), TemplatePlaceholder())
-                        "contact" -> this.insert(ContactTemplate(), TemplatePlaceholder())
-                        "endpoints" -> this.insert(ApiTemplate(), TemplatePlaceholder())
-                        "newFeast" -> this.insert(NewFeastTemplate(dao), TemplatePlaceholder())
-                        "detail" -> this.insert(DetailTemplate(dao,tableId), TemplatePlaceholder())
-                    }
+                    insert(content)
                 }
             }
         }

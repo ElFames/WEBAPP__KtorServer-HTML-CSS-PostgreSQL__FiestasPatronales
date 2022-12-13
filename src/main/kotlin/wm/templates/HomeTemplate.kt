@@ -1,14 +1,10 @@
 package wm.templates
 
-import io.ktor.server.html.*
 import kotlinx.html.*
-import org.jetbrains.exposed.sql.transactions.transaction
-import wm.data.DAOInstances
+import wm.models.city.City
+import wm.models.feast.Feast
 
-data class HomeTemplate(val dao: DAOInstances) : Template<FlowContent> {
-    private val feastDAO = dao.feastDAO
-
-    override fun FlowContent.apply() {
+fun FlowContent.homeTemplate(feasts: Map<City, List<Feast>>)  {
         div("mainbox") {
             h2 {
                 +"Fiestas Populares de España"
@@ -17,20 +13,16 @@ data class HomeTemplate(val dao: DAOInstances) : Template<FlowContent> {
             p { +"Aqui tienes una lista de todas las fiestas que tenemos registradas agrupadas por ciudades. Si no encuentras tu fiesta aqui, puedes utilizar el buscador que disponemos." }
             p { +"Si no obtienes resultados, puedes añadirla en el apartado 'Aportar' para que otras personas puedan encontrarla la proxima vez." }
             h3 { +"Todas las fiestas agrupadas por ciudades:" }
-            transaction {
-                feastDAO.getAllFeasts().groupBy {
-                    it.city
-                }.forEach {
-                    div(classes="feastLine") {
-                        p {
-                            +it.key.name
-                            br;br
-                            it.value.forEach {
-                                a(classes="feast") {
-                                    href = "${it.id.value}"
-                                    +it.name
-                                    br
-                                }
+            feasts.forEach {
+                div(classes="feastLine") {
+                    p {
+                        +it.key.name
+                        br;br
+                        it.value.forEach {
+                            a(classes="feast") {
+                                href = "${it.id.value}"
+                                +it.name
+                                br
                             }
                         }
                     }
@@ -38,4 +30,3 @@ data class HomeTemplate(val dao: DAOInstances) : Template<FlowContent> {
             }
         }
     }
-}

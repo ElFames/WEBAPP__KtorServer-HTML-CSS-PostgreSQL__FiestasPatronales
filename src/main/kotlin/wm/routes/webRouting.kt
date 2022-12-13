@@ -18,9 +18,10 @@ import java.io.File
 fun Route.webRouting(dao: DAOInstances) {
     val feastDAO = dao.feastDAO
     val userDAO = dao.userDAO
+    val cityDAO = dao.cityDAO
+    val townDAO = dao.townDAO
     val commentstorage = dao.commentstorage
     var currentUser: User? = null
-    var search: String? = null
 
     route("") {
         get {
@@ -29,20 +30,17 @@ fun Route.webRouting(dao: DAOInstances) {
         get("/") {
             call.respondRedirect("home")
         }
-
         get("login") {
             call.respondHtmlTemplate(LoginTemplate()) {}
         }
         get("/images/{imageName}") {
             val imageName = call.parameters["imageName"]
-            if(File("./images/$imageName").exists())
+            val image = File("./images/$imageName")
+            if(image.exists())
                 call.respondFile(File("./images/$imageName"))
-            else
-                call.respondText("Image not found", status = HttpStatusCode.NotFound)
+            else call.respondText("Image not found", status = HttpStatusCode.NotFound)
         }
         post("checkLogin") {
-            // el receiveParameters() se queda pillado sin dar error...
-            // hemos hecho una funcion que hace lo mismo a raiz del receiveText()
             val params = getParams(call.receiveText())
             if (userDAO.checkUser(params["nickname"],params["password"])) {
                 currentUser = userDAO.getUser(params["nickname"],params["password"])
@@ -78,11 +76,6 @@ fun Route.webRouting(dao: DAOInstances) {
             commentstorage.saveComment(currentUser!!.nickname,email, text)
             call.respondRedirect("home")
         }
-        post("findSearch") {
-            val params = getParams(call.receiveText())
-            search = params["search"]
-            call.respondRedirect("searcher")
-        }
 
         /**
          * Insert Templates:
@@ -90,41 +83,54 @@ fun Route.webRouting(dao: DAOInstances) {
         get("{id}") {
             if (currentUser==null) call.respondRedirect("login")
             val id = call.parameters["id"]
-            call.respondHtmlTemplate(LayoutTemplate(dao)) {
-                this.content = "detail"
-                this.tableId = id ?: ""
+            val feast = feastDAO.getFeastById(id?.toInt()?:1)
+            call.respondHtmlTemplate(LayoutTemplate()) {
+                content {
+                    detailTemplate(feast)
+                }
             }
         }
         get("home") {
             if (currentUser==null) call.respondRedirect("login")
-            call.respondHtmlTemplate(LayoutTemplate(dao)) {
-                this.content = "home"
+            val feasts = feastDAO.getAllFeastsGrupedByCity()
+            call.respondHtmlTemplate(LayoutTemplate()) {
+                this.content {
+                    homeTemplate(feasts)
+                }
             }
         }
         get("searcher") {
             if (currentUser==null) call.respondRedirect("login")
-            call.respondHtmlTemplate(LayoutTemplate(dao)) {
-                this.content = "searcher"
-                println(search)
-                this.search = search
+            val textToSearch = call.parameters
+            val feasts = feastDAO.searchFeast(textToSearch["search"]?:"")
+            call.respondHtmlTemplate(LayoutTemplate()) {
+                this.content {
+                    searcherTemplate(feasts)
+                }
             }
         }
         get("newFeast") {
             if (currentUser==null) call.respondRedirect("login")
-            call.respondHtmlTemplate(LayoutTemplate(dao)) {
-                this.content = "newFeast"
+            call.respondHtmlTemplate(LayoutTemplate()) {
+                this.content {
+                    newFeastTemplate(townDAO.getAllTowns(),cityDAO.getAllCitys())
+                }
             }
         }
         get("contact") {
             if (currentUser==null) call.respondRedirect("login")
-            call.respondHtmlTemplate(LayoutTemplate(dao)) {
-                this.content = "contact"
+            call.respondHtmlTemplate(LayoutTemplate()) {
+                this.content {
+                    contactTemplate()
+                }
             }
         }
         get("endpoints") {
             if (currentUser==null) call.respondRedirect("login")
-            call.respondHtmlTemplate(LayoutTemplate(dao)) {
-                this.content = "endpoints"
+            call.respondHtmlTemplate(LayoutTemplate()) {
+                this.content {
+                    endpointsTemplate()
+                }
             }
         }
     }

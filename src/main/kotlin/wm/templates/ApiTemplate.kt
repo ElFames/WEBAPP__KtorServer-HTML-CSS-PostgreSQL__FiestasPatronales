@@ -1,33 +1,30 @@
 package wm.templates
 
-import io.ktor.server.html.*
 import kotlinx.html.*
 
-class ApiTemplate: Template<FlowContent> {
+fun FlowContent.endpointsTemplate() {
 
-    override fun FlowContent.apply() {
-        div("mainbox") {
-            h2 {
-                +"Consigue datos en json"
-            }
-            p { +"Esto es una mini introduccion para que te pongas a leer un rato, no hay secreto aqui el codigo es libre siempre y cuando pagues pero es gratis si no es dinero lo que pagas."}
-
-            a("/api/feasts") {
-                p { +"GET /api/feasts"}
-            }
-            a("/api/citys") {
-                p { +"GET /api/citys"}
-            }
-            a("/api/towns") {
-                p {+"GET /api/towns"}
-            }
-            a("/api/1") {
-                p {+"GET /api/1" }
-            }
-            p {
-                +"PUT /api/{id}/description"
-            }
-            p { +"Las credenciales de la api seran las mismas que las del usuario de la web" }
+    div("mainbox") {
+        h2 {
+            +"Consigue datos en json"
         }
+        p { +"Esto es una mini introduccion para que te pongas a leer un rato, no hay secreto aqui el codigo es libre siempre y cuando pagues pero es gratis si no es dinero lo que pagas."}
+
+        a("/api/feasts") {
+            p { +"GET /api/feasts"}
+        }
+        a("/api/citys") {
+            p { +"GET /api/citys"}
+        }
+        a("/api/towns") {
+            p {+"GET /api/towns"}
+        }
+        a("/api/1") {
+            p {+"GET /api/1" }
+        }
+        p {
+            +"PUT /api/{id}/description"
+        }
+        p { +"Las credenciales de la api seran las mismas que las del usuario de la web" }
     }
 }

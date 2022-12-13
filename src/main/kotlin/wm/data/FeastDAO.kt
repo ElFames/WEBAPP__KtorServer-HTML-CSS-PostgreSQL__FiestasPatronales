@@ -9,9 +9,9 @@ import wm.models.feast.JsonFeast
 class FeastDAO(private val cityDAO: CityDAO, private val townDAO: TownDAO) {
     var searchResult = mutableListOf<Feast?>()
 
-    fun searchFeast(name: String): MutableList<Feast> {
+    fun searchFeast(text: String): MutableList<Feast> {
         searchResult.removeAll { true }
-        val regex = Regex(".*${name.lowercase()}.*")
+        val regex = Regex(".*${text.lowercase()}.*")
         val resultList = mutableListOf<Feast>()
         transaction {
             getAllFeasts().forEach {
@@ -21,7 +21,6 @@ class FeastDAO(private val cityDAO: CityDAO, private val townDAO: TownDAO) {
         }
         return resultList
     }
-
     fun addFeast(feastDataInList: Map<String, String>) {
         transaction {
             Feast.new {
@@ -34,12 +33,15 @@ class FeastDAO(private val cityDAO: CityDAO, private val townDAO: TownDAO) {
             }
         }
     }
-
     fun getAllFeasts(): SizedIterable<Feast> {
         return transaction {
             Feast.all()
         }
     }
+    fun getAllFeastsGrupedByCity() =
+        transaction {
+            getAllFeasts().groupBy { it.city }
+        }
     fun getJsonsFeasts(): MutableList<JsonFeast> {
         val jsonFeastList = mutableListOf<JsonFeast>()
         transaction {
@@ -64,13 +66,11 @@ class FeastDAO(private val cityDAO: CityDAO, private val townDAO: TownDAO) {
             Feast.find { Feasts.id eq feastId }.firstOrNull()
         }
     }
-
     fun getFeastByName(feastName: String): Feast? {
         return transaction {
             Feast.find { Feasts.name eq feastName }.firstOrNull()
         }
     }
-
     fun getJsonFeast(id: Int): JsonFeast {
         val feast = getFeastById(id)!!
         return transaction {
