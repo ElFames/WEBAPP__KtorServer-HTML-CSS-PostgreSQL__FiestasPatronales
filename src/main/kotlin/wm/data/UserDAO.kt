@@ -18,12 +18,15 @@ class UserDAO {
         }
     }
     fun newUser(newNickname: String, newPassword: String) {
-        transaction {
-            User.new {
-                nickname = newNickname
-                password = newPassword
+        if (!checkUser(newNickname, newPassword)){
+            transaction {
+                User.new {
+                    nickname = newNickname
+                    password = newPassword
+                }
             }
         }
+
     }
     private fun getAllUsers(): MutableList<UserPasswordCredential> {
         val resultList = mutableListOf<UserPasswordCredential>()
