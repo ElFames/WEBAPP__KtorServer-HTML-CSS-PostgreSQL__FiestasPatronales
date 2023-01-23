@@ -10,6 +10,7 @@ import io.ktor.server.routing.*
 import kotlinx.html.body
 import kotlinx.html.h1
 import wm.data.DAOInstances
+import wm.functions.getParams
 import wm.functions.multipartDataToFeast
 import wm.models.user.User
 import wm.templates.*
@@ -135,32 +136,3 @@ fun Route.webRouting(dao: DAOInstances) {
         }
     }
 }
-fun getParams(textForm: String): MutableMap<String, String> {
-    val params = mutableMapOf<String,String>()
-    var name: String
-    var value: String
-    textForm.reader().forEachLine {
-        name = it.split('=')[0]
-        value = it.split('=')[1]
-        params[name] = value
-    }
-    return params
-}
-/**
- * Para proteger tu cuenta, a partir del 30 de mayo del 2022, Google dejará de admitir aplicaciones
- * y dispositivos de terceros que te pidan que inicies sesión en tu cuenta de Google usando solo tu
- * nombre de usuario y contraseña.
- */
-/**
- * SimpleEmail().apply {
-        hostName = "smtp.googlemail.com"
-        setSmtpPort(465)
-        setAuthenticator(DefaultAuthenticator("migueelamaya@gmail.com", ""))
-        isSSLOnConnect = true
-        setFrom("migueelamaya@gmail.com")
-        subject = "Comentario web FiestasPatronales"
-        setMsg(params["comment"])
-        addTo(params["email"])
-        send()
-    }
- */
