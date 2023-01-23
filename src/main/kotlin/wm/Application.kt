@@ -11,16 +11,17 @@ fun main() {
     DataBase.init()
     startApiServer()
 }
-fun Application.module() {
-    val dao = DAOInstances()
-    configureTemplating()
-    configureSerialization(dao)
-    configureRouting(dao)
-}
 fun startApiServer() =
     embeddedServer(
         factory = Netty,
         port = 8080,
         host = "0.0.0.0",
-        module = Application::module
-    ).start(wait = true)
+        module = Application::module)
+        .start(wait = true)
+
+fun Application.module() {
+    val dao = DAOInstances
+    configureTemplating()
+    configureSerialization(dao)
+    configureRouting(dao)
+}

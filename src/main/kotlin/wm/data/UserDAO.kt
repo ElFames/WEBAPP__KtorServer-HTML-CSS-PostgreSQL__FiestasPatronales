@@ -26,7 +26,6 @@ class UserDAO {
                 }
             }
         }
-
     }
     private fun getAllUsers(): MutableList<UserPasswordCredential> {
         val resultList = mutableListOf<UserPasswordCredential>()

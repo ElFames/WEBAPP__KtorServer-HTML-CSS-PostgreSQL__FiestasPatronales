@@ -11,7 +11,7 @@ import wm.models.user.Users
 object DataBase {
     fun init() {
         val driver = "org.postgresql.Driver"
-        val dbUrl = "jdbc:postgresql://localhost:5432/fiestas_patronales"
+        val dbUrl = "jdbc:postgresql://localhost:5432/fiestasPatronales"
         val database = Database.connect(dbUrl, driver, user="sjo", password="")
         transaction(database) {
             SchemaUtils.create(Citys, Towns, Feasts, Users)

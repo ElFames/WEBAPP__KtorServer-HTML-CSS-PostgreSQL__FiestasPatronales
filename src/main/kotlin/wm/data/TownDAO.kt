@@ -7,6 +7,8 @@ import wm.models.town.Town
 import wm.models.town.Towns
 
 class TownDAO(private val cityDAO: CityDAO) {
+    val defaultTowns = mutableListOf("Cerdanyola", "Sitges", "Sagunt", "Aiora", "Carmona", "Osuna",)
+
     fun checkTown(townName: String) =
         transaction {
             Town.find { Towns.name eq townName }.firstOrNull()
@@ -47,12 +49,15 @@ class TownDAO(private val cityDAO: CityDAO) {
         }
         return jsonTownList
     }
-    fun addTown(name: String, cityName: String) {
-        val city = cityDAO.getCityByName(cityName) ?: return // fk
-        transaction {
-            Town.new {
-                this.name = name
-                this.city = city
+    fun addTown(name: String, location: String? = null, cityName: String) {
+        val city = cityDAO.getCityByName(cityName) ?: return
+        if (!checkTown(name)) {
+            transaction {
+                Town.new {
+                    this.name = name
+                    this.location = location
+                    this.city = city
+                }
             }
         }
     }
