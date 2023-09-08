@@ -3,9 +3,9 @@ package wm
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import wm.data.DAOInstances
-import wm.data.DataBase
-import wm.plugins.*
+import wm.data.database.DataManager
+import wm.data.database.DataBase
+import wm.core.plugins.*
 
 fun main() {
     DataBase.init()
@@ -20,7 +20,7 @@ fun startApiServer() =
         .start(wait = true)
 
 fun Application.module() {
-    val dao = DAOInstances
+    val dao = DataManager
     configureTemplating()
     configureSerialization(dao)
     configureRouting(dao)
