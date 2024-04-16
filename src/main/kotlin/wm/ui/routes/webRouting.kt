@@ -10,7 +10,7 @@ import io.ktor.server.routing.*
 import kotlinx.html.body
 import kotlinx.html.h1
 import wm.data.database.DataManager
-import wm.core.getParams
+import wm.core.utils.getParams
 import wm.core.multipartDataToFeast
 import wm.data.models.user.User
 import wm.ui.templates.*

@@ -33,6 +33,7 @@ fun FlowContent.contactTemplate() {
             }
             br
             input(classes="comment") {
+                id = "comment"
                 name = "comment"
                 type = InputType.text
                 placeholder = "Escribe tu comentario"

@@ -1,4 +1,4 @@
-package wm.core
+package wm.core.utils
 
 fun getParams(textForm: String): MutableMap<String, String> {
     val params = mutableMapOf<String,String>()
